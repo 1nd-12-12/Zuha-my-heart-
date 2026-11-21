@@ -2,6 +2,7 @@
   'use strict';
 
   const SPECIAL_DATE_ISO = '2025-02-14T00:00:00';
+  const CHAPTER_ANIMATION_DURATION_MS = 6800;
 
   const PROGRESSIVE_LINES = [
     'Z💐',
@@ -135,6 +136,9 @@
   let seqTimer = null;
   let typeTimer = null;
   let letterTimer = null;
+  let chapterAdvanceTimer = null;
+  let chapterBarInterval = null;
+  let autoCycleStarted = false;
   let heartsSent = 0;
   let audioCtx = null;
 
@@ -247,19 +251,20 @@
   tickCounter();
   setInterval(tickCounter, 1000);
 
-  // Confession
+  // Confession -> Automatically opens Chapter I surprise after animation finishes
   const progLine = document.getElementById('progLine');
   const progFill = document.getElementById('progFill');
   const typedLine1 = document.getElementById('typedLine1');
   const typedLine2 = document.getElementById('typedLine2');
-  const replayConfessionBtn = document.getElementById('replayConfessionBtn');
+  const autoAdvanceStatus = document.getElementById('autoAdvanceStatus');
 
-  function startConfession() {
+  function startConfession(autoOpenNextPage = false) {
     clearInterval(seqTimer);
     clearInterval(typeTimer);
     typedLine1.textContent = '';
     typedLine2.textContent = '';
     progFill.style.width = '0%';
+    autoAdvanceStatus.textContent = 'Love animation chal rahi hai...';
 
     let i = 0;
     const draw = () => {
@@ -274,23 +279,31 @@
         let x = 0;
         let y = 0;
         typeTimer = setInterval(() => {
-          if (x < a.length) typedLine1.textContent += a[x++];
-          else if (y < b.length) typedLine2.textContent += b[y++];
-          else clearInterval(typeTimer);
+          if (x < a.length) {
+            typedLine1.textContent += a[x++];
+          } else if (y < b.length) {
+            typedLine2.textContent += b[y++];
+          } else {
+            clearInterval(typeTimer);
+            autoAdvanceStatus.textContent = 'Agla surprise page khul raha hai...';
+            if (autoOpenNextPage) {
+              setTimeout(() => {
+                loadChapter(0, true, true);
+                document.getElementById('chaptersSection').scrollIntoView({ behavior: 'smooth' });
+              }, 1100);
+            }
+          }
         }, 55);
       }
     };
     draw();
-    seqTimer = setInterval(draw, 380);
+    seqTimer = setInterval(draw, 350);
   }
-  startConfession();
-  replayConfessionBtn.addEventListener('click', () => {
-    chime(660);
-    startConfession();
-  });
+  startConfession(false);
 
-  // Chapters
+  // Chapters -> Automatically opens next chapter page after each animation finishes
   const chapTabs = document.querySelectorAll('.chap-tab');
+  const chapterStage = document.getElementById('chapterStage');
   const chapImg = document.getElementById('chapImg');
   const chapFallback = document.getElementById('chapFallback');
   const chapFallbackMsg = document.getElementById('chapFallbackMsg');
@@ -300,13 +313,49 @@
   const chapTitle = document.getElementById('chapTitle');
   const chapDesc = document.getElementById('chapDesc');
   const chapTrack = document.getElementById('chapTrack');
-  const prevChapBtn = document.getElementById('prevChapBtn');
-  const nextChapBtn = document.getElementById('nextChapBtn');
+  const chapTimerFill = document.getElementById('chapTimerFill');
+  const chapAutoHint = document.getElementById('chapAutoHint');
 
-  function loadChapter(idx, playSound = false) {
+  function clearChapterTimers() {
+    clearTimeout(chapterAdvanceTimer);
+    clearInterval(chapterBarInterval);
+  }
+
+  function scheduleNextChapter(idx) {
+    clearChapterTimers();
+    const startTime = Date.now();
+    chapTimerFill.style.width = '0%';
+    chapAutoHint.textContent =
+      idx < CHAPTERS.length - 1
+        ? 'Animation khatam hone par agla chapter page apne aap khulega...'
+        : 'Aakhiri chapter ke baad Secret Letter page apne aap khulega...';
+
+    chapterBarInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, (elapsed / CHAPTER_ANIMATION_DURATION_MS) * 100);
+      chapTimerFill.style.width = `${pct}%`;
+    }, 100);
+
+    chapterAdvanceTimer = setTimeout(() => {
+      clearChapterTimers();
+      chapTimerFill.style.width = '100%';
+
+      if (idx < CHAPTERS.length - 1) {
+        loadChapter(idx + 1, true, true);
+      } else {
+        openSecretLetterView();
+        document.getElementById('letterSection').scrollIntoView({ behavior: 'smooth' });
+      }
+    }, CHAPTER_ANIMATION_DURATION_MS);
+  }
+
+  function loadChapter(idx, playSound = false, enableAutoAdvance = false) {
     currentIndex = idx;
     const ch = CHAPTERS[idx];
     chapTabs.forEach((t, n) => t.classList.toggle('active', n === idx));
+
+    chapterStage.classList.add('fade-swap');
+    setTimeout(() => chapterStage.classList.remove('fade-swap'), 260);
 
     chapFallback.classList.remove('show');
     chapImg.style.display = 'block';
@@ -325,27 +374,22 @@
     chapDesc.textContent = ch.desc;
     chapTrack.textContent = ch.audio;
 
-    prevChapBtn.disabled = idx === 0;
-    nextChapBtn.textContent = idx === CHAPTERS.length - 1 ? 'Go To Letter →' : 'Next Chapter →';
-
     if (playSound) playSingleTrack(ch.audio);
+    if (enableAutoAdvance) {
+      scheduleNextChapter(idx);
+    } else {
+      clearChapterTimers();
+      chapTimerFill.style.width = '0%';
+    }
   }
-  loadChapter(0, false);
+  loadChapter(0, false, false);
 
   chapTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       chime(600);
-      loadChapter(parseInt(tab.dataset.index, 10), true);
+      const targetIdx = parseInt(tab.dataset.index, 10);
+      loadChapter(targetIdx, true, true);
     });
-  });
-
-  prevChapBtn.addEventListener('click', () => {
-    if (currentIndex > 0) loadChapter(currentIndex - 1, true);
-  });
-
-  nextChapBtn.addEventListener('click', () => {
-    if (currentIndex < CHAPTERS.length - 1) loadChapter(currentIndex + 1, true);
-    else document.getElementById('letterSection').scrollIntoView({ behavior: 'smooth' });
   });
 
   // Lightbox
@@ -370,14 +414,14 @@
     if (e.target === lightbox) lightbox.classList.remove('open');
   });
 
-  // Secret Letter
+  // Secret Letter -> Automatically scrolls to Love Story after letter typing completes
   const letterSealView = document.getElementById('letterSealView');
   const letterOpenView = document.getElementById('letterOpenView');
   const openLetterBtn = document.getElementById('openLetterBtn');
   const closeLetterBtn = document.getElementById('closeLetterBtn');
   const typedLetterText = document.getElementById('typedLetterText');
 
-  openLetterBtn.addEventListener('click', () => {
+  function openSecretLetterView() {
     chime(700);
     letterSealView.classList.add('hide');
     letterOpenView.classList.add('show');
@@ -386,10 +430,18 @@
     const chars = Array.from(LETTER_CONTENT);
     let k = 0;
     letterTimer = setInterval(() => {
-      if (k < chars.length) typedLetterText.textContent += chars[k++];
-      else clearInterval(letterTimer);
-    }, 22);
-  });
+      if (k < chars.length) {
+        typedLetterText.textContent += chars[k++];
+      } else {
+        clearInterval(letterTimer);
+        setTimeout(() => {
+          document.getElementById('storySection').scrollIntoView({ behavior: 'smooth' });
+        }, 1400);
+      }
+    }, 24);
+  }
+
+  openLetterBtn.addEventListener('click', openSecretLetterView);
 
   closeLetterBtn.addEventListener('click', () => {
     clearInterval(letterTimer);
@@ -483,11 +535,27 @@
   enterWorldBtn.addEventListener('click', () => {
     chime(680);
     pausedByUser = false;
-    playSingleTrack(CHAPTERS[currentIndex].audio);
-    startConfession();
+    autoCycleStarted = true;
+    playSingleTrack(CHAPTERS[0].audio);
     burst(30);
-    document.getElementById('counterSection').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('confessionSection').scrollIntoView({ behavior: 'smooth' });
+    startConfession(true);
   });
+
+  // Auto-start chapter progression when user scrolls into Chapters section
+  const chaptersSection = document.getElementById('chaptersSection');
+  const chapObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !autoCycleStarted) {
+          autoCycleStarted = true;
+          loadChapter(currentIndex, false, true);
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+  chapObserver.observe(chaptersSection);
 
   finaleBurstBtn.addEventListener('click', () => {
     chime(840);
