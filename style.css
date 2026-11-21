@@ -312,10 +312,6 @@ body {
   text-align: left;
 }
 
-.left-row {
-  justify-content: flex-start;
-}
-
 .btn-gold {
   display: inline-flex;
   align-items: center;
@@ -351,11 +347,6 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   cursor: pointer;
-}
-
-.btn-outline:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
 }
 
 .divider {
@@ -504,7 +495,7 @@ body {
 .final-typed-wrap {
   padding-top: 16px;
   border-top: 1px solid var(--border);
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .typed-one {
@@ -521,6 +512,13 @@ body {
   min-height: 34px;
   color: var(--rose-gold);
   margin-top: 4px;
+}
+
+.auto-status {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--muted);
 }
 
 /* Chapters */
@@ -554,6 +552,12 @@ body {
   gap: 22px;
   align-items: center;
   text-align: left;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.chap-stage.fade-swap {
+  opacity: 0.35;
+  transform: translateY(8px);
 }
 
 @media (min-width: 860px) {
@@ -580,6 +584,12 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  animation: kenBurns 9s ease-in-out infinite alternate;
+}
+
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
 }
 
 .photo-fallback {
@@ -659,7 +669,23 @@ body {
 .track-line {
   font-size: 0.8rem;
   color: var(--rose-gold);
-  margin-bottom: 18px;
+  margin-bottom: 14px;
+}
+
+.chapter-timer-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(245, 223, 184, 0.16);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.chapter-timer-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--wine), var(--champagne));
+  transition: width 0.12s linear;
 }
 
 /* Secret Letter */
