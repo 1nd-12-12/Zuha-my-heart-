@@ -1,3 +1,4 @@
+
 /* ==========================================================================
    ZUHA — MY FOREVER LOVE
    Complete Interactive Experience, Audio Engine & Particle System
@@ -523,4 +524,458 @@
     chapterShayari.textContent = chap.shayari;
     chapterMood.textContent = chap.mood;
     chapterTitle.textContent = chap.title;
-    chapterReflection.textContent = chap
+    chapterReflection.textContent = chap.reflection;
+    chapterAudioName.textContent = chap.audio;
+
+    prevChapBtn.disabled = index === 0;
+    nextChapBtn.querySelector('span').textContent =
+      index === CHAPTERS.length - 1 ? 'Go to Love Letter →' : 'Next Chapter →';
+
+    if (shouldPlayAudio) {
+      playChapterAudio(chap.audio);
+    }
+    burstParticles(14);
+  }
+
+  chapPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      playSoftChime(590, 0.1);
+      const idx = parseInt(pill.dataset.chap, 10);
+      if (!Number.isNaN(idx)) selectChapter(idx, true);
+    });
+  });
+
+  prevChapBtn.addEventListener('click', () => {
+    playSoftChime(540, 0.1);
+    if (currentChapterIndex > 0) selectChapter(currentChapterIndex - 1, true);
+  });
+
+  nextChapBtn.addEventListener('click', () => {
+    playSoftChime(660, 0.1);
+    if (currentChapterIndex < CHAPTERS.length - 1) {
+      selectChapter(currentChapterIndex + 1, true);
+    } else {
+      document.getElementById('letterSection').scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  fullscreenPhotoBtn.addEventListener('click', () => {
+    playSoftChime(720, 0.12);
+    const chap = CHAPTERS[currentChapterIndex];
+    lightboxImg.src = chap.image;
+    lightboxCaption.textContent = `${chap.roman} — ${chap.title}`;
+    photoLightbox.classList.remove('hidden');
+  });
+
+  closeLightboxBtn.addEventListener('click', () => {
+    photoLightbox.classList.add('hidden');
+  });
+
+  photoLightbox.addEventListener('click', (e) => {
+    if (e.target === photoLightbox) photoLightbox.classList.add('hidden');
+  });
+
+  /* Subtle Scroll Parallax on Active Chapter Photo */
+  window.addEventListener(
+    'scroll',
+    () => {
+      const rect = chapterPhotoFrame.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const centerRatio = (rect.top + rect.height / 2 - vh / 2) / vh;
+      const clamped = Math.max(-1, Math.min(1, centerRatio));
+      chapterImage.style.setProperty('--parallax-shift', clamped.toFixed(3));
+    },
+    { passive: true }
+  );
+
+  /* ------------------------------------------------------------------------
+     SECRET LOVE LETTER (Sealed Envelope + Typing Animation)
+     ------------------------------------------------------------------------ */
+  function typeSecretLetter() {
+    clearInterval(letterTypeTimer);
+    typedLetterBody.textContent = '';
+    const chars = Array.from(SECRET_LETTER_TEXT);
+    let idx = 0;
+
+    letterTypeTimer = setInterval(() => {
+      if (idx < chars.length) {
+        typedLetterBody.textContent += chars[idx++];
+      } else {
+        clearInterval(letterTypeTimer);
+      }
+    }, 22);
+  }
+
+  openLetterBtn.addEventListener('click', () => {
+    playSoftChime(700, 0.14);
+    sealedLetterCover.classList.add('hidden');
+    unsealedLetterPaper.classList.remove('hidden');
+    burstParticles(22);
+    typeSecretLetter();
+  });
+
+  sealLetterAgainBtn.addEventListener('click', () => {
+    clearInterval(letterTypeTimer);
+    unsealedLetterPaper.classList.add('hidden');
+    sealedLetterCover.classList.remove('hidden');
+  });
+
+  /* ------------------------------------------------------------------------
+     8-MILESTONE LOVE STORY TIMELINE
+     ------------------------------------------------------------------------ */
+  function buildTimeline() {
+    loveTimelineEl.innerHTML = LOVE_MILESTONES.map(
+      (m) => `
+      <div class="milestone-item">
+        <span class="milestone-heart" aria-hidden="true">♥</span>
+        <div class="milestone-card">
+          <span class="milestone-step">${m.step}</span>
+          <h3 class="milestone-title">${m.title}</h3>
+          <p class="milestone-desc">${m.desc}</p>
+        </div>
+      </div>`
+    ).join('');
+  }
+  buildTimeline();
+
+  /* ------------------------------------------------------------------------
+     INTERACTIVE 3D-STYLE GLOWING HEART
+     ------------------------------------------------------------------------ */
+  interactiveHeartBtn.addEventListener('click', () => {
+    playSoftChime(780, 0.14);
+    heartTaps++;
+    heartCounterBadgeUpdate();
+
+    const msgIndex = (heartTaps - 1) % HEART_MESSAGES.length;
+    heartAffirmationText.textContent = HEART_MESSAGES[msgIndex];
+
+    interactiveHeartBtn.classList.add('exploded');
+    setTimeout(() => interactiveHeartBtn.classList.remove('exploded'), 260);
+    burstParticles(28);
+  });
+
+  function heartCounterBadgeUpdate() {
+    heartTapCounter.textContent = `Hearts sent: ${heartTaps}`;
+  }
+
+  /* ------------------------------------------------------------------------
+     ROMANTIC QUESTION SECTION
+     ------------------------------------------------------------------------ */
+  answerYesBtn.addEventListener('click', () => {
+    playSoftChime(820, 0.16);
+    questionResponseBox.classList.remove('hidden');
+    questionResponseText.textContent =
+      'Tumne mera dil aur khush kar diya, Zuha! Har ek yaad ko main apni sabse keemti ' +
+      'kahani bana kar sambhal kar rakhunga. Mera Baccha, hamara aane wala waqt behtareen hoga ❤️✨';
+    burstParticles(40);
+  });
+
+  answerLetsSeeBtn.addEventListener('click', () => {
+    playSoftChime(640, 0.14);
+    questionResponseBox.classList.remove('hidden');
+    questionResponseText.textContent =
+      'Koi jaldi nahi hai, Zuha — bina kisi pressure ke. Bas tumhare saath har chhota sa pal ' +
+      'mehsoos karna hi mere liye bahut khaas hai. Jab bhi tumhara dil chahe, main yahin hoon 💗';
+    burstParticles(18);
+  });
+
+  /* ------------------------------------------------------------------------
+     MEMORY WALL (5 Existing Photos)
+     ------------------------------------------------------------------------ */
+  function buildMemoryWall() {
+    memoryWallGrid.innerHTML = CHAPTERS.map(
+      (chap, idx) => `
+      <div class="wall-frame" data-wall-index="${idx}" role="button" tabindex="0" aria-label="View ${chap.image} full screen">
+        <img src="${chap.image}" alt="Zuha Memory ${idx + 1}" />
+        <div class="wall-caption">${chap.roman} · ${chap.image}</div>
+      </div>`
+    ).join('');
+
+    memoryWallGrid.querySelectorAll('.wall-frame').forEach((card) => {
+      const openItem = () => {
+        playSoftChime(710, 0.12);
+        const idx = parseInt(card.dataset.wallIndex, 10);
+        const chap = CHAPTERS[idx];
+        lightboxImg.src = chap.image;
+        lightboxCaption.textContent = `${chap.roman} — ${chap.title}`;
+        photoLightbox.classList.remove('hidden');
+      };
+      card.addEventListener('click', openItem);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openItem();
+        }
+      });
+    });
+  }
+  buildMemoryWall();
+
+  /* ------------------------------------------------------------------------
+     SECRET SURPRISE ("ONLY FOR ZUHA") & INTRO / FINALE ACTIONS
+     ------------------------------------------------------------------------ */
+  function openSecretVault() {
+    playSoftChime(760, 0.15);
+    secretModal.classList.remove('hidden');
+    burstParticles(26);
+  }
+
+  onlyForZuhaBtn.addEventListener('click', openSecretVault);
+  openSecretFromSectionBtn.addEventListener('click', openSecretVault);
+  closeSecretBtn.addEventListener('click', () => secretModal.classList.add('hidden'));
+  secretModal.addEventListener('click', (e) => {
+    if (e.target === secretModal) secretModal.classList.add('hidden');
+  });
+
+  enterWorldBtn.addEventListener('click', () => {
+    playSoftChime(660, 0.15);
+    audioHud.classList.remove('hidden');
+    floatingNav.classList.remove('hidden');
+    isUserPaused = false;
+    playChapterAudio(CHAPTERS[currentChapterIndex].audio);
+
+    if (!hasStartedConfession) {
+      hasStartedConfession = true;
+      runConfessionSequence();
+    }
+
+    burstParticles(35);
+    document.getElementById('counterSection').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  finaleLoveBurstBtn.addEventListener('click', () => {
+    playSoftChime(840, 0.18);
+    burstParticles(70);
+    showToast('ZUHA, YOU ARE MY FAVOURITE CHAPTER ❤️');
+  });
+
+  restartExperienceBtn.addEventListener('click', () => {
+    playSoftChime(600, 0.12);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ------------------------------------------------------------------------
+     SCROLL PROGRESS, SECTION REVEAL, FLOATING NAV & BACK TO TOP
+     ------------------------------------------------------------------------ */
+  const revealSections = document.querySelectorAll('.reveal-section');
+  const navButtons = floatingNav.querySelectorAll('button');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+
+          if (entry.target.id === 'confessionSection' && !hasStartedConfession) {
+            hasStartedConfession = true;
+            runConfessionSequence();
+          }
+
+          if (entry.target.id === 'finaleSection') {
+            burstParticles(25);
+          }
+
+          const secId = `#${entry.target.id}`;
+          navButtons.forEach((btn) => {
+            btn.classList.toggle('active', btn.dataset.target === secId);
+          });
+        }
+      });
+    },
+    { threshold: 0.16 }
+  );
+
+  revealSections.forEach((sec) => observer.observe(sec));
+
+  navButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      playSoftChime(620, 0.08);
+      const target = document.querySelector(btn.dataset.target);
+      if (target) {
+        audioHud.classList.remove('hidden');
+        floatingNav.classList.remove('hidden');
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  backToTopBtn.addEventListener('click', () => {
+    playSoftChime(650, 0.1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      scrollProgress.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+
+      if (window.scrollY > 260) {
+        audioHud.classList.remove('hidden');
+        floatingNav.classList.remove('hidden');
+        backToTopBtn.classList.remove('hidden');
+      } else {
+        backToTopBtn.classList.add('hidden');
+      }
+    },
+    { passive: true }
+  );
+
+  /* ------------------------------------------------------------------------
+     CUSTOM CURSOR (Desktop) & PRELOADER DISMISSAL
+     ------------------------------------------------------------------------ */
+  if (window.matchMedia('(pointer: fine)').matches && customCursor) {
+    document.body.classList.add('custom-cursor-active');
+    window.addEventListener(
+      'mousemove',
+      (e) => {
+        customCursor.style.left = `${e.clientX}px`;
+        customCursor.style.top = `${e.clientY}px`;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener('mouseover', (e) => {
+      const interactive = e.target.closest('button, a, input, .wall-frame');
+      customCursor.classList.toggle('hovering', Boolean(interactive));
+    });
+  }
+
+  window.addEventListener('load', () => {
+    selectChapter(0, false);
+    setTimeout(() => {
+      preloader.classList.add('done');
+    }, 550);
+  });
+
+  /* ------------------------------------------------------------------------
+     AMBIENT CANVAS: PETALS, CHAMPAGNE GOLD DUST & HEARTS
+     ------------------------------------------------------------------------ */
+  const canvas = document.getElementById('ambientCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let cw = 0;
+  let ch = 0;
+  let tick = 0;
+
+  function resizeCanvas() {
+    cw = canvas.width = window.innerWidth;
+    ch = canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function makeParticle(burst = false) {
+    const roll = Math.random();
+    let kind = 'petal';
+    if (roll > 0.84) kind = 'heart';
+    else if (roll > 0.42) kind = 'gold';
+
+    return {
+      kind,
+      x: Math.random() * cw,
+      y: burst ? window.scrollY + ch * (0.25 + Math.random() * 0.5) : Math.random() * ch,
+      size: kind === 'gold' ? Math.random() * 2.2 + 0.9 : Math.random() * 7 + 4.5,
+      vy: kind === 'heart' ? -(Math.random() * 0.85 + 0.35) : Math.random() * 0.8 + 0.3,
+      vx: (Math.random() - 0.5) * 0.65,
+      rot: Math.random() * Math.PI * 2,
+      spin: (Math.random() - 0.5) * 0.025,
+      alpha: Math.random() * 0.55 + 0.22,
+      phase: Math.random() * 60
+    };
+  }
+
+  function initAmbient() {
+    const count = cw < 640 ? 36 : 64;
+    particles = Array.from({ length: count }, () => makeParticle(false));
+  }
+
+  function burstParticles(amount) {
+    for (let i = 0; i < amount; i++) {
+      particles.push(makeParticle(true));
+    }
+    if (particles.length > 160) {
+      particles.splice(0, particles.length - 160);
+    }
+  }
+
+  function drawPetal(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.alpha;
+    const g = ctx.createRadialGradient(0, 0, 1, 0, 0, p.size);
+    g.addColorStop(0, '#c9184a');
+    g.addColorStop(1, '#390817');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(0, -p.size);
+    ctx.bezierCurveTo(p.size, -p.size * 0.6, p.size * 0.8, p.size, 0, p.size * 1.1);
+    ctx.bezierCurveTo(-p.size * 0.8, p.size, -p.size, -p.size * 0.6, 0, -p.size);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawGold(p) {
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = '#f5dfb8';
+    ctx.shadowColor = '#e5b299';
+    ctx.shadowBlur = 7;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawHeart(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.scale(p.size / 14, p.size / 14);
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = '#e5b299';
+    ctx.shadowColor = '#9e1940';
+    ctx.shadowBlur = 9;
+    ctx.beginPath();
+    ctx.moveTo(0, 4);
+    ctx.bezierCurveTo(0, 0, -8, -4, -8, 2);
+    ctx.bezierCurveTo(-8, 8, 0, 12, 0, 15);
+    ctx.bezierCurveTo(0, 12, 8, 8, 8, 2);
+    ctx.bezierCurveTo(8, -4, 0, 0, 0, 4);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function loopCanvas() {
+    tick += 0.015;
+    ctx.clearRect(0, 0, cw, ch);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.y += p.vy;
+      p.x += p.vx + Math.sin(tick + p.phase) * 0.25;
+      p.rot += p.spin;
+
+      if (p.kind === 'petal') drawPetal(p);
+      else if (p.kind === 'gold') drawGold(p);
+      else drawHeart(p);
+
+      if (p.y > ch + 20) {
+        p.y = -15;
+        p.x = Math.random() * cw;
+      } else if (p.y < -20) {
+        p.y = ch + 15;
+        p.x = Math.random() * cw;
+      }
+      if (p.x > cw + 20) p.x = -15;
+      if (p.x < -20) p.x = cw + 15;
+    }
+
+    requestAnimationFrame(loopCanvas);
+  }
+
+  initAmbient();
+  loopCanvas();
+})();
