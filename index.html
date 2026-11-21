@@ -32,7 +32,7 @@
     </div>
 
     <div class="hud-center">
-      <span id="nowPlayingLabel" class="now-playing">Chapter I — Melody</span>
+      <span id="nowPlayingLabel" class="now-playing">Zuha1.mp3</span>
     </div>
 
     <div class="hud-right">
@@ -125,12 +125,12 @@
             </div>
           </div>
 
-          <!-- Final Highlighted Reveal -->
+          <!-- Typed-Out Final Love Lines Below -->
           <div id="finalLoveBanner" class="final-love-banner hidden">
-            <h2 class="rose-gold-title">I LOVE YOU SO MUCH</h2>
-            <p class="baccha-subtitle">MERA BACCHA 💐✨</p>
+            <h2 id="typedLoveLine" class="rose-gold-title"></h2>
+            <p id="typedBacchaLine" class="baccha-subtitle"></p>
 
-            <button id="enterChaptersBtn" class="luxury-cta-btn secondary-cta">
+            <button id="enterChaptersBtn" class="luxury-cta-btn secondary-cta hidden">
               <span class="btn-label">BEGIN OUR STORY ✨</span>
             </button>
           </div>
@@ -142,7 +142,6 @@
          STAGE 2: FIVE CINEMATIC PHOTO CHAPTERS
          ========================================================= -->
     <section id="chaptersScreen" class="screen" aria-label="Five Photo Chapters">
-      <!-- Dynamic Chapter Container -->
       <div id="chapterStage" class="chapter-stage">
         <!-- Chapter Indicator Pills -->
         <nav class="chapter-dots" aria-label="Chapter Navigation">
@@ -158,13 +157,13 @@
           <div class="photo-column">
             <div id="photoCard" class="cinematic-photo-card">
               <div class="photo-shimmer"></div>
-              <img id="chapterImage" src="zuha1.jpg" alt="Zuha Memory" class="chapter-img" />
+              <img id="chapterImage" src="Zuha1.jpg" alt="Zuha Memory" class="chapter-img" />
 
               <!-- Graceful Fallback Frame if image is missing -->
               <div id="photoFallback" class="photo-fallback hidden">
                 <div class="fallback-ornament">❦</div>
                 <p class="fallback-title">ZUHA</p>
-                <p id="fallbackFileHint" class="fallback-hint">Place zuha1.jpg in the project folder</p>
+                <p id="fallbackFileHint" class="fallback-hint">Place Zuha1.jpg in the project folder</p>
               </div>
 
               <div class="photo-caption-badge">
@@ -176,18 +175,14 @@
           <!-- Right / Bottom: Editorial Shayari & Controls -->
           <div class="story-column">
             <div id="storyContent" class="story-content animate-in">
-              <p id="chapterSubtitle" class="chapter-subtitle">THE FIRST SPARK</p>
+              <p id="chapterSubtitle" class="chapter-subtitle">THE BEGINNING OF MAGIC</p>
               <h2 id="chapterTitle" class="chapter-title">Jahan Tum Ho, Wahin Sukoon Hai</h2>
 
               <div class="gold-divider"><span>✦</span></div>
 
-              <blockquote id="chapterShayari" class="chapter-shayari">
-                <!-- Populated dynamically via script.js -->
-              </blockquote>
+              <blockquote id="chapterShayari" class="chapter-shayari"></blockquote>
 
-              <p id="chapterNote" class="chapter-note">
-                <!-- Populated dynamically via script.js -->
-              </p>
+              <p id="chapterNote" class="chapter-note"></p>
 
               <!-- Navigation Controls -->
               <div class="chapter-nav-controls">
