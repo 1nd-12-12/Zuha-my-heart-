@@ -1,3 +1,4 @@
+
 /* ==========================================================================
    ZUHA — MY FOREVER LOVE
    Ultra-Luxury Editorial Romantic Stylesheet
@@ -424,26 +425,26 @@ body::before {
   font-size: 0.7rem;
   letter-spacing: 0.32em;
   color: var(--rose-gold);
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .progressive-stage {
-  min-height: 130px;
+  min-height: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .progressive-line {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 4.6vw, 2.45rem);
+  font-size: clamp(1.3rem, 4.5vw, 2.35rem);
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--rose-gold-light);
   text-shadow: 0 0 22px rgba(229, 178, 153, 0.55), 0 0 42px rgba(164, 19, 60, 0.65);
-  min-height: 54px;
+  min-height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -451,7 +452,7 @@ body::before {
 }
 
 .progressive-line.pop {
-  animation: textPopIn 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: textPopIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes textPopIn {
@@ -471,27 +472,32 @@ body::before {
   width: 0%;
   height: 100%;
   background: linear-gradient(90deg, var(--crimson-glow), var(--rose-gold-light));
-  transition: width 0.3s ease;
+  transition: width 0.25s ease;
 }
 
 .final-love-banner {
-  margin-top: 24px;
-  padding-top: 24px;
+  margin-top: 22px;
+  padding-top: 22px;
   border-top: 1px solid rgba(229, 178, 153, 0.22);
-  animation: fadeRise 1s ease forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeRise 0.7s ease forwards;
 }
 
-.final-love-banner.hidden {
+.final-love-banner.hidden,
+.secondary-cta.hidden {
   display: none;
 }
 
 .rose-gold-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4.8vw, 2.55rem);
+  font-size: clamp(1.45rem, 4.6vw, 2.45rem);
+  min-height: 44px;
   background: linear-gradient(135deg, #fff6f0 0%, #e5b299 50%, #c8876d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .baccha-subtitle {
@@ -499,9 +505,10 @@ body::before {
   font-size: clamp(1.3rem, 3.8vw, 1.9rem);
   font-weight: 600;
   letter-spacing: 0.16em;
+  min-height: 36px;
   color: var(--rose-gold-light);
   text-shadow: 0 0 20px rgba(229, 178, 153, 0.5);
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
 .secondary-cta {
@@ -849,4 +856,64 @@ body::before {
   font-size: clamp(1.35rem, 4vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.14em;
-  col
+  color: #ffd9c7;
+  text-shadow: 0 0 22px rgba(229, 178, 153, 0.65);
+  margin-top: 4px;
+}
+
+.finale-paragraph {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.1rem, 2.8vw, 1.32rem);
+  line-height: 1.75;
+  color: #f4e6e0;
+  margin-bottom: 26px;
+}
+
+.proposal-box {
+  background: rgba(18, 4, 8, 0.72);
+  border: 1px solid rgba(229, 178, 153, 0.32);
+  border-radius: 20px;
+  padding: 24px 20px;
+  margin-bottom: 28px;
+  box-shadow: inset 0 0 28px rgba(128, 15, 47, 0.25);
+}
+
+.ring-glow {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 160, 0.8));
+}
+
+.proposal-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 3vw, 1.4rem);
+  color: var(--rose-gold-light);
+  margin-bottom: 10px;
+}
+
+.proposal-text {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.7vw, 1.24rem);
+  line-height: 1.68;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.proposal-signature {
+  font-family: var(--font-script);
+  font-size: 1.85rem;
+  color: var(--rose-gold);
+}
+
+.finale-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.mini-cta {
+  padding: 13px 26px;
+  font-size: 0.76rem;
+}
