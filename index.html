@@ -1,12 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#080609" />
   <title>ZUHA — MY FOREVER LOVE</title>
 
-  <!-- Premium Editorial, Script & Display Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -14,417 +14,341 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Scroll Progress Bar -->
   <div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
-
-  <!-- Custom Romantic Cursor (Desktop) -->
-  <div id="customCursor" class="custom-cursor" aria-hidden="true">
-    <span class="cursor-core">♥</span>
-  </div>
-
-  <!-- Preloader Screen -->
-  <div id="preloader" class="preloader" aria-label="Loading Experience">
-    <div class="preloader-inner">
-      <div class="preloader-ring"></div>
-      <p class="preloader-brand">ZUHA</p>
-      <p class="preloader-sub">Preparing your world...</p>
-    </div>
-  </div>
-
-  <!-- Ambient Canvas: Rose Petals, Golden Dust & Hearts -->
   <canvas id="ambientCanvas" aria-hidden="true"></canvas>
-  <div class="cinematic-vignette" aria-hidden="true"></div>
 
-  <!-- Floating Glassmorphic Music & Sound HUD -->
-  <header id="audioHud" class="audio-hud hidden" aria-label="Music and Sound Controls">
-    <div class="hud-group">
-      <button id="musicToggleBtn" class="hud-btn" type="button" aria-label="Play or Pause Music">
-        <span id="musicEqualizer" class="equalizer">
-          <span></span><span></span><span></span><span></span>
-        </span>
-        <span id="musicStatusText">PLAY</span>
-      </button>
-      <span id="nowPlayingLabel" class="now-playing">Zuha1.mp3</span>
-    </div>
+  <!-- Floating Music Bar -->
+  <header id="audioHud" class="audio-hud" aria-label="Music Controls">
+    <button id="musicToggleBtn" class="hud-btn" type="button">
+      <span id="eqBars" class="eq-bars">
+        <i></i><i></i><i></i><i></i>
+      </span>
+      <span id="musicBtnLabel">PLAY MUSIC</span>
+    </button>
 
-    <div class="hud-group">
-      <label for="volumeSlider" class="sr-only">Music Volume</label>
-      <span class="hud-icon" aria-hidden="true">♪</span>
-      <input id="volumeSlider" type="range" min="0" max="1" step="0.02" value="0.85" />
+    <span id="nowPlayingText" class="now-playing">Zuha1.mp3</span>
 
-      <button id="sfxToggleBtn" class="hud-icon-btn" type="button" aria-label="Toggle Subtle Sound Effects" title="Toggle Sound Effects">
-        SFX: ON
-      </button>
+    <div class="hud-right">
+      <span class="vol-sym">♪</span>
+      <input id="volumeSlider" type="range" min="0" max="1" step="0.02" value="0.85" aria-label="Volume" />
+      <button id="sfxBtn" class="hud-small-btn" type="button">SFX ON</button>
     </div>
   </header>
 
-  <!-- Floating Navigation Pill Menu -->
-  <nav id="floatingNav" class="floating-nav hidden" aria-label="Section Navigation">
-    <button type="button" data-target="#counterSection">Counter</button>
-    <button type="button" data-target="#confessionSection">Confession</button>
-    <button type="button" data-target="#chaptersSection">5 Chapters</button>
-    <button type="button" data-target="#letterSection">Letter</button>
-    <button type="button" data-target="#storyTimelineSection">Love Story</button>
-    <button type="button" data-target="#heartSection">Heart</button>
-    <button type="button" data-target="#questionSection">Question</button>
-    <button type="button" data-target="#dreamSection">Dreams</button>
-    <button type="button" data-target="#memoryWallSection">Memory Wall</button>
-    <button type="button" data-target="#finaleSection">Finale</button>
+  <!-- Floating Navigation -->
+  <nav class="floating-nav" aria-label="Sections">
+    <a href="#introSection">Intro</a>
+    <a href="#counterSection">Counter</a>
+    <a href="#confessionSection">Confession</a>
+    <a href="#chaptersSection">Chapters</a>
+    <a href="#letterSection">Letter</a>
+    <a href="#storySection">Story</a>
+    <a href="#heartSection">Heart</a>
+    <a href="#questionSection">Question</a>
+    <a href="#dreamSection">Dreams</a>
+    <a href="#wallSection">Wall</a>
+    <a href="#finaleSection">Finale</a>
   </nav>
 
-  <!-- Back To Top Button -->
-  <button id="backToTopBtn" class="back-to-top hidden" type="button" aria-label="Back to Top" title="Back to Top">
-    ↑
-  </button>
+  <button id="topBtn" class="top-btn" type="button" aria-label="Back to Top">↑</button>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- Toast Notice -->
-  <div id="toastNotice" class="toast-notice" role="status" aria-live="polite"></div>
-
-  <!-- Full-Screen Photo Lightbox -->
-  <div id="photoLightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Full-Screen Photo Viewer">
-    <button id="closeLightboxBtn" class="lightbox-close" type="button" aria-label="Close Full-Screen View">✕</button>
-    <div class="lightbox-content">
-      <img id="lightboxImg" src="" alt="Zuha Fullscreen Memory" />
+  <!-- Fullscreen Photo Modal -->
+  <div id="lightbox" class="modal-backdrop" aria-hidden="true">
+    <div class="lightbox-box">
+      <button id="closeLightbox" class="modal-close" type="button" aria-label="Close">✕</button>
+      <img id="lightboxImg" src="" alt="Zuha Memory" />
       <p id="lightboxCaption" class="lightbox-caption"></p>
     </div>
   </div>
 
-  <!-- Secret Surprise Modal ("ONLY FOR ZUHA") -->
-  <div id="secretModal" class="secret-modal hidden" role="dialog" aria-modal="true" aria-labelledby="secretModalTitle">
-    <div class="secret-card">
-      <button id="closeSecretBtn" class="lightbox-close" type="button" aria-label="Close Secret Surprise">✕</button>
-      <p class="eyebrow-tag">UNLOCKED SECRET SURPRISE</p>
-      <h3 id="secretModalTitle" class="section-heading">For Zuha’s Eyes Only 🌹</h3>
-      <p class="secret-body">
+  <!-- Secret Surprise Modal -->
+  <div id="secretModal" class="modal-backdrop" aria-hidden="true">
+    <div class="secret-box">
+      <button id="closeSecret" class="modal-close" type="button" aria-label="Close">✕</button>
+      <p class="eyebrow">ONLY FOR ZUHA</p>
+      <h3 class="card-title">Meri Sabse Khaas Zuha 🌹</h3>
+      <p class="secret-text">
         Chahe duniya kitni bhi badal jaaye, Zuha, tum mere dil ka sabse mehfooz kona rahogi.
-        Tumhari har chhoti si khushi, tumhari hasi, aur tumhara saath meri sabse badi daulat hai.
-        Mera Baccha, tum sirf meri mohabbat nahi — meri poori duniya ho.
+        Tumhari har ek muskurahat, tumhari baatein, aur tumhara saath meri sabse badi khushi hai.
+        I love you endlessly, Mera Baccha.
       </p>
-      <p class="script-sig">Always Yours — Forever &amp; Beyond ✨</p>
+      <p class="script-sig">Forever Yours ✨</p>
     </div>
   </div>
 
-  <!-- =====================================================================
-       1. CINEMATIC INTRO (Animated Envelope + Glowing Rose)
-       ===================================================================== -->
-  <section id="introSection" class="hero-intro" aria-label="Cinematic Intro">
-    <div class="intro-container">
-      <p class="eyebrow-tag">A CINEMATIC LOVE EXPERIENCE</p>
+  <!-- 1. CINEMATIC INTRO -->
+  <section id="introSection" class="section hero">
+    <div class="wrap center">
+      <p class="eyebrow">A CINEMATIC LOVE EXPERIENCE</p>
 
-      <div id="introEnvelope" class="envelope-stage" aria-hidden="true">
+      <div class="envelope-wrap" aria-hidden="true">
         <div class="envelope-glow"></div>
-        <!-- Glowing Rose Emerging From Envelope -->
-        <div class="emerging-rose">
-          <svg viewBox="0 0 160 160" class="rose-svg">
-            <defs>
-              <radialGradient id="roseGradA" cx="50%" cy="35%" r="65%">
-                <stop offset="0%" stop-color="#ff5c7a" />
-                <stop offset="55%" stop-color="#7a0c2e" />
-                <stop offset="100%" stop-color="#26040e" />
-              </radialGradient>
-              <linearGradient id="champagneGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#fff0dc" />
-                <stop offset="50%" stop-color="#e5b299" />
-                <stop offset="100%" stop-color="#b47b63" />
-              </linearGradient>
-            </defs>
-            <path class="r-petal rp1" d="M80,122 C44,118 28,82 44,53 C56,32 104,32 116,53 C132,82 116,118 80,122 Z" fill="url(#roseGradA)" stroke="url(#champagneGold)" stroke-width="1" />
-            <path class="r-petal rp2" d="M80,115 C50,108 38,77 54,55 C65,40 95,40 106,55 C122,77 110,108 80,115 Z" fill="url(#roseGradA)" stroke="url(#champagneGold)" stroke-width="1" />
-            <path class="r-petal rp3" d="M80,104 C59,98 54,72 67,58 C76,49 92,51 98,62 C106,78 96,98 80,104 Z" fill="url(#roseGradA)" stroke="url(#champagneGold)" stroke-width="1.1" />
-          </svg>
-        </div>
-
-        <!-- Luxury Envelope Body & Flap -->
-        <div class="envelope-box">
-          <div class="envelope-flap"></div>
-          <div class="envelope-pocket"></div>
-          <div class="wax-seal">Z ♥</div>
+        <div class="rose-rise">🌹</div>
+        <div class="env-card">
+          <div class="env-flap"></div>
+          <div class="env-seal">Z ♥</div>
         </div>
       </div>
 
-      <h1 class="hero-title">ZUHA — MY FOREVER LOVE</h1>
-      <p class="hero-subtitle">
-        Every heartbeat whispers your name. Step inside a world crafted with endless devotion,
-        poetry, memories, and dreams for you.
+      <h1 class="main-title">ZUHA — MY FOREVER LOVE</h1>
+      <p class="lead">
+        Every heartbeat whispers your name. Step into a luxury romantic world created
+        with poetry, memories, and endless love for you.
       </p>
 
-      <div class="intro-actions">
-        <button id="enterWorldBtn" class="gold-cta-btn" type="button">
-          <span class="btn-shine"></span>
-          <span>ENTER MY WORLD ✨</span>
-        </button>
-
-        <button id="onlyForZuhaBtn" class="secret-trigger-btn" type="button">
-          ONLY FOR ZUHA 🔒
-        </button>
+      <div class="btn-row">
+        <button id="enterWorldBtn" class="btn-gold" type="button">ENTER MY WORLD ✨</button>
+        <button id="onlyForZuhaBtn" class="btn-outline" type="button">ONLY FOR ZUHA 🔒</button>
       </div>
     </div>
   </section>
 
-  <!-- =====================================================================
-       MAIN EXPERIENCE BODY (Revealed smoothly & accessible via scroll/nav)
-       ===================================================================== -->
-  <main id="experienceMain" class="experience-main">
+  <!-- 2. INTERACTIVE LOVE COUNTER -->
+  <section id="counterSection" class="section">
+    <div class="wrap center">
+      <p class="eyebrow">TIME STANDS STILL WITH YOU</p>
+      <h2 class="sec-title">Every Second Since You Became My World</h2>
+      <p class="lead">Every passing second is another reason I adore you, Zuha.</p>
 
-    <!-- 2. INTERACTIVE LOVE COUNTER -->
-    <section id="counterSection" class="panel-section reveal-section" aria-labelledby="counterHeading">
-      <div class="section-shell">
-        <p class="eyebrow-tag">TIME STANDS STILL WITH YOU</p>
-        <h2 id="counterHeading" class="section-heading">Every Second Since You Became My World</h2>
-        <p class="section-lead">
-          Each tick of the clock is another second I fall deeper in love with you, Zuha.
+      <div class="glass counter-box">
+        <div class="counter-grid">
+          <div class="unit">
+            <span id="cDays" class="num">00</span>
+            <span class="lbl">DAYS</span>
+          </div>
+          <div class="unit">
+            <span id="cHours" class="num">00</span>
+            <span class="lbl">HOURS</span>
+          </div>
+          <div class="unit">
+            <span id="cMinutes" class="num">00</span>
+            <span class="lbl">MINUTES</span>
+          </div>
+          <div class="unit">
+            <span id="cSeconds" class="num">00</span>
+            <span class="lbl">SECONDS</span>
+          </div>
+        </div>
+        <p id="counterNote" class="sub-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ORIGINAL ANIMATED LOVE CONFESSION -->
+  <section id="confessionSection" class="section">
+    <div class="wrap center">
+      <p class="eyebrow">FROM THE DEPTHS OF MY HEART</p>
+      <h2 class="sec-title">A Confession Written in Rose Gold</h2>
+
+      <div class="glass confession-box">
+        <div id="progLine" class="prog-line">ZUHA I LOVE YOU SO MUCH❣️</div>
+        <div class="prog-bar">
+          <div id="progFill" class="prog-fill"></div>
+        </div>
+
+        <div id="finalTypedWrap" class="final-typed-wrap">
+          <h3 id="typedLine1" class="typed-one"></h3>
+          <p id="typedLine2" class="typed-two"></p>
+        </div>
+
+        <div class="btn-row">
+          <button id="replayConfessionBtn" class="btn-outline" type="button">↺ Replay Animation</button>
+          <a href="#chaptersSection" class="btn-gold">Explore 5 Chapters →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FIVE CINEMATIC PHOTO CHAPTERS -->
+  <section id="chaptersSection" class="section">
+    <div class="wrap wide center">
+      <p class="eyebrow">FIVE CINEMATIC CHAPTERS</p>
+      <h2 class="sec-title">Frames That Hold My Soul</h2>
+      <p class="lead">Each chapter plays its own song with romantic shayari and full-screen view.</p>
+
+      <div id="chapterTabs" class="chap-tabs">
+        <button type="button" class="chap-tab active" data-index="0">I · Zuha1</button>
+        <button type="button" class="chap-tab" data-index="1">II · Zuha2</button>
+        <button type="button" class="chap-tab" data-index="2">III · Zuha3</button>
+        <button type="button" class="chap-tab" data-index="3">IV · Zuha4</button>
+        <button type="button" class="chap-tab" data-index="4">V · Zuha5</button>
+      </div>
+
+      <div id="chapterStage" class="chap-stage style-0">
+        <div class="chap-photo-col">
+          <div class="photo-frame">
+            <img id="chapImg" src="Zuha1.jpg" alt="Zuha Memory" />
+            <div id="chapFallback" class="photo-fallback">
+              <div class="fb-icon">❦</div>
+              <p id="chapFallbackMsg"></p>
+            </div>
+            <button id="fullViewBtn" class="full-btn" type="button">⤢ Full Screen</button>
+            <div class="photo-overlay">
+              <span id="chapTag" class="chap-tag">CHAPTER I · Zuha1.mp3</span>
+              <blockquote id="chapShayari" class="chap-shayari"></blockquote>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass chap-info-col">
+          <p id="chapMood" class="eyebrow left-align">THE BEGINNING OF MAGIC</p>
+          <h3 id="chapTitle" class="card-title left-align">Jahan Tum Ho, Wahin Sukoon Hai</h3>
+          <div class="divider"><span>✦</span></div>
+          <p id="chapDesc" class="chap-desc"></p>
+          <p class="track-line">Now Playing: <strong id="chapTrack">Zuha1.mp3</strong></p>
+
+          <div class="btn-row left-row">
+            <button id="prevChapBtn" class="btn-outline" type="button">← Previous</button>
+            <button id="nextChapBtn" class="btn-gold" type="button">Next Chapter →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SECRET LOVE LETTER -->
+  <section id="letterSection" class="section">
+    <div class="wrap center">
+      <p class="eyebrow">SEALED WITH MY HEART</p>
+      <h2 class="sec-title">A Secret Love Letter For You</h2>
+
+      <div class="glass letter-box">
+        <div id="letterSealView" class="letter-seal-view">
+          <div class="big-emoji">💌</div>
+          <h3 class="card-title">A Private Letter For Zuha</h3>
+          <p class="lead small-lead">Tap below to unseal and read my heart.</p>
+          <button id="openLetterBtn" class="btn-gold" type="button">OPEN SECRET LETTER 🕯️</button>
+        </div>
+
+        <div id="letterOpenView" class="letter-open-view">
+          <div class="letter-top">
+            <span class="script-greeting">My Dearest Zuha,</span>
+            <button id="closeLetterBtn" class="link-btn" type="button">Seal Again</button>
+          </div>
+          <p id="typedLetterText" class="letter-body"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. OUR LOVE STORY (8 MILESTONES) -->
+  <section id="storySection" class="section">
+    <div class="wrap center">
+      <p class="eyebrow">EIGHT CHAPTERS OF US</p>
+      <h2 class="sec-title">Our Love Story Timeline</h2>
+      <p class="lead">Eight special milestones written across my heart.</p>
+
+      <div id="timelineList" class="timeline"></div>
+    </div>
+  </section>
+
+  <!-- 7. INTERACTIVE 3D-STYLE GLOWING HEART -->
+  <section id="heartSection" class="section">
+    <div class="wrap center">
+      <p class="eyebrow">TOUCH THE PULSE OF MY HEART</p>
+      <h2 class="sec-title">Every Beat Belongs to Zuha</h2>
+      <p class="lead">Tap the glowing heart to send love bursts and read a message.</p>
+
+      <div class="glass heart-box">
+        <button id="glowHeartBtn" class="heart-3d-btn" type="button" aria-label="Tap Heart">
+          <span class="heart-ring"></span>
+          <span class="heart-glyph">♥</span>
+        </button>
+        <p id="heartMsg" class="heart-msg">You are my favourite person.</p>
+        <span id="heartCount" class="heart-count">Hearts sent: 0</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. ROMANTIC QUESTION SECTION -->
+  <section id="questionSection" class="section">
+    <div class="wrap center">
+      <p class="eyebrow">A GENTLE QUESTION FROM MY HEART</p>
+      <h2 class="sec-title">Ek baat poochun, Zuha?</h2>
+
+      <div class="glass question-box">
+        <p class="q-prompt">“Will you create beautiful memories with me?”</p>
+        <div class="btn-row">
+          <button id="yesBtn" class="btn-gold" type="button">YES ❤️</button>
+          <button id="letsSeeBtn" class="btn-outline" type="button">LET'S SEE 💗</button>
+        </div>
+        <div id="qAnswerBox" class="q-answer">
+          <p id="qAnswerText"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. DREAM DESTINATION SECTION -->
+  <section id="dreamSection" class="section dream-bg">
+    <div class="moon" aria-hidden="true"></div>
+    <div class="wrap center above">
+      <p class="eyebrow">UNDER MOONLIGHT &amp; STARS</p>
+      <h2 class="sec-title">One day, let's collect memories together.</h2>
+
+      <div class="glass dream-box">
+        <p class="dream-text">
+          Walking beside a calm moonlit beach, warm candlelight glowing softly, stars above,
+          and your hand held safely in mine — collecting peaceful memories for a lifetime.
         </p>
-
-        <div class="glass-card counter-card">
-          <div class="counter-grid" id="loveCounterGrid">
-            <div class="time-unit">
-              <span id="daysCount" class="time-number">00</span>
-              <span class="time-label">DAYS</span>
-            </div>
-            <div class="time-unit">
-              <span id="hoursCount" class="time-number">00</span>
-              <span class="time-label">HOURS</span>
-            </div>
-            <div class="time-unit">
-              <span id="minutesCount" class="time-number">00</span>
-              <span class="time-label">MINUTES</span>
-            </div>
-            <div class="time-unit">
-              <span id="secondsCount" class="time-number">00</span>
-              <span class="time-label">SECONDS</span>
-            </div>
-          </div>
-          <p id="counterStartCaption" class="counter-caption"></p>
+        <div class="dream-grid">
+          <div class="dream-item">🌙 Moonlit Beach Walk</div>
+          <div class="dream-item">🕯️ Candlelight Nights</div>
+          <div class="dream-item">✨ Starry Sky Together</div>
+          <div class="dream-item">☕ Quiet Morning Chai</div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 3. ORIGINAL ANIMATED CONFESSION SEQUENCE -->
-    <section id="confessionSection" class="panel-section reveal-section" aria-labelledby="confessionHeading">
-      <div class="section-shell">
-        <p class="eyebrow-tag">FROM THE DEPTHS OF MY HEART</p>
-        <h2 id="confessionHeading" class="section-heading">A Confession Written in Rose Gold</h2>
+  <!-- 10. MEMORY WALL -->
+  <section id="wallSection" class="section">
+    <div class="wrap wide center">
+      <p class="eyebrow">CURATED GALLERY OF ZUHA</p>
+      <h2 class="sec-title">Our Memory Wall</h2>
+      <p class="lead">Tap any photo to open full-screen view.</p>
 
-        <div class="glass-card confession-card">
-          <div id="progressiveText" class="progressive-line" aria-live="polite"></div>
+      <div id="memoryWall" class="wall-grid"></div>
+    </div>
+  </section>
 
-          <div class="progress-track">
-            <div id="confessionProgressFill" class="progress-fill"></div>
-          </div>
-
-          <div id="finalConfessionBox" class="final-confession-box hidden">
-            <h3 id="typedLoveLine" class="confession-line-one"></h3>
-            <p id="typedBacchaLine" class="confession-line-two"></p>
-          </div>
-
-          <div class="confession-controls">
-            <button id="replayConfessionBtn" class="outline-gold-btn" type="button">
-              ↺ Replay Confession
-            </button>
-            <button id="jumpToChaptersBtn" class="gold-cta-btn compact-btn" type="button">
-              <span>Explore 5 Photo Chapters →</span>
-            </button>
-          </div>
-        </div>
+  <!-- 11. SECRET SURPRISE SECTION -->
+  <section id="secretSection" class="section">
+    <div class="wrap center">
+      <div class="glass secret-banner">
+        <p class="eyebrow">HIDDEN SURPRISE</p>
+        <h2 class="sec-title">A Special Note Kept Just For You</h2>
+        <p class="lead small-lead">Open the hidden note whenever you want a reminder of how much you matter.</p>
+        <button id="openSecretBtn" class="btn-gold" type="button">ONLY FOR ZUHA ✨</button>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 4. FIVE CINEMATIC PHOTO EXPERIENCES (Zuha1.jpg–Zuha5.jpg & Zuha1.mp3–Zuha5.mp3) -->
-    <section id="chaptersSection" class="panel-section reveal-section" aria-labelledby="chaptersHeading">
-      <div class="section-shell wide">
-        <p class="eyebrow-tag">FIVE CINEMATIC CHAPTERS</p>
-        <h2 id="chaptersHeading" class="section-heading">Frames That Hold My Soul</h2>
-        <p class="section-lead">
-          Each chapter carries its own melody, shayari, motion, and full-screen view.
+  <!-- 12. FINAL GRAND PROPOSAL -->
+  <section id="finaleSection" class="section">
+    <div class="wrap center">
+      <div class="finale-box">
+        <div class="big-emoji">💖</div>
+        <p class="eyebrow">ETERNAL DEVOTION</p>
+        <h2 class="finale-title">ZUHA, YOU ARE MY FAVOURITE CHAPTER.</h2>
+        <p class="finale-love">I LOVE YOU SO MUCH</p>
+        <p class="finale-baccha">MERA BACCHA 💐✨</p>
+        <div class="divider"><span>❦</span></div>
+        <p class="finale-msg">
+          Among every story, every dream, and every wish I have ever held, you remain my truest
+          forever, Zuha. I want to stand by your side through every season, cherish every smile,
+          and love you deeply today, tomorrow, and always.
         </p>
-
-        <div class="chapter-selector" role="tablist" aria-label="Select Chapter">
-          <button type="button" class="chap-pill active" data-chap="0">I · Zuha1</button>
-          <button type="button" class="chap-pill" data-chap="1">II · Zuha2</button>
-          <button type="button" class="chap-pill" data-chap="2">III · Zuha3</button>
-          <button type="button" class="chap-pill" data-chap="3">IV · Zuha4</button>
-          <button type="button" class="chap-pill" data-chap="4">V · Zuha5</button>
-        </div>
-
-        <article id="activeChapterStage" class="chapter-showcase layout-0">
-          <div class="chapter-visual-wrap">
-            <div id="chapterPhotoFrame" class="chapter-photo-frame">
-              <img id="chapterImage" src="Zuha1.jpg" alt="Zuha Memory Chapter 1" class="chapter-photo" />
-              <div id="chapterFallback" class="photo-fallback hidden">
-                <span class="ornament">❦</span>
-                <p id="chapterFallbackText"></p>
-              </div>
-
-              <!-- Romantic Shayari Overlay on Photo -->
-              <div class="photo-shayari-overlay">
-                <span id="chapterBadge" class="chapter-badge">CHAPTER I · Zuha1.mp3</span>
-                <blockquote id="chapterShayari" class="chapter-shayari-text"></blockquote>
-              </div>
-
-              <button id="fullscreenPhotoBtn" class="expand-photo-btn" type="button" aria-label="Open Full-Screen Photo">
-                ⤢ Full Screen
-              </button>
-            </div>
-          </div>
-
-          <div class="chapter-editorial-wrap glass-card">
-            <p id="chapterMood" class="chapter-mood">FIRST LIGHT</p>
-            <h3 id="chapterTitle" class="chapter-title">Jahan Tum Ho, Wahin Sukoon Hai</h3>
-            <div class="gold-rule"><span>✦</span></div>
-            <p id="chapterReflection" class="chapter-reflection"></p>
-
-            <div class="chapter-track-row">
-              <span class="track-badge">♪ Active Track: <strong id="chapterAudioName">Zuha1.mp3</strong></span>
-            </div>
-
-            <div class="chapter-nav-row">
-              <button id="prevChapBtn" class="outline-gold-btn" type="button">← Previous</button>
-              <button id="nextChapBtn" class="gold-cta-btn compact-btn" type="button">
-                <span>Next Chapter →</span>
-              </button>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- 5. SECRET LOVE LETTER (Sealed Envelope + Typed Letter) -->
-    <section id="letterSection" class="panel-section reveal-section" aria-labelledby="letterHeading">
-      <div class="section-shell">
-        <p class="eyebrow-tag">SEALED WITH MY HEART</p>
-        <h2 id="letterHeading" class="section-heading">A Secret Love Letter For You</h2>
-
-        <div class="glass-card letter-card">
-          <div id="sealedLetterCover" class="sealed-letter-cover">
-            <div class="wax-emblem large-seal">💌</div>
-            <h3 class="letter-cover-title">A Private Letter for Zuha</h3>
-            <p class="letter-cover-sub">Tap the seal below to break open my heart’s words.</p>
-            <button id="openLetterBtn" class="gold-cta-btn" type="button">
-              <span class="btn-shine"></span>
-              <span>OPEN SECRET LETTER 🕯️</span>
-            </button>
-          </div>
-
-          <div id="unsealedLetterPaper" class="unsealed-letter-paper hidden">
-            <div class="letter-header">
-              <span class="letter-date">My Dearest Zuha,</span>
-              <button id="sealLetterAgainBtn" class="text-link-btn" type="button">Seal Letter</button>
-            </div>
-            <div id="typedLetterBody" class="handwritten-letter"></div>
-          </div>
+        <div class="btn-row">
+          <button id="finaleBurstBtn" class="btn-gold" type="button">SHOWER HEARTS 🌹</button>
+          <a href="#introSection" class="btn-outline">↑ Back To Top</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 6. OUR LOVE STORY (8 Milestones Vertical Timeline) -->
-    <section id="storyTimelineSection" class="panel-section reveal-section" aria-labelledby="timelineHeading">
-      <div class="section-shell">
-        <p class="eyebrow-tag">EIGHT CHAPTERS OF US</p>
-        <h2 id="timelineHeading" class="section-heading">Our Love Story Timeline</h2>
-        <p class="section-lead">Every milestone with you is a treasure I guard inside my soul.</p>
-
-        <div id="loveTimeline" class="love-timeline"></div>
-      </div>
-    </section>
-
-    <!-- 7. INTERACTIVE 3D-STYLE GLOWING HEART -->
-    <section id="heartSection" class="panel-section reveal-section" aria-labelledby="heartHeading">
-      <div class="section-shell">
-        <p class="eyebrow-tag">TOUCH THE PULSE OF MY HEART</p>
-        <h2 id="heartHeading" class="section-heading">Every Beat Belongs to Zuha</h2>
-        <p class="section-lead">Tap the glowing heart to send a burst of hearts and reveal a love note.</p>
-
-        <div class="glass-card heart-stage-card">
-          <button id="interactiveHeartBtn" class="glow-3d-heart" type="button" aria-label="Tap glowing heart for a romantic message">
-            <span class="heart-aura"></span>
-            <span class="heart-shape">♥</span>
-          </button>
-
-          <p id="heartAffirmationText" class="heart-affirmation">
-            You are my favourite person.
-          </p>
-          <span id="heartTapCounter" class="heart-counter-badge">Hearts sent: 0</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. ROMANTIC QUESTION SECTION -->
-    <section id="questionSection" class="panel-section reveal-section" aria-labelledby="questionHeading">
-      <div class="section-shell">
-        <p class="eyebrow-tag">A GENTLE QUESTION FROM MY HEART</p>
-        <h2 id="questionHeading" class="section-heading">Ek baat poochun, Zuha?</h2>
-
-        <div class="glass-card question-card">
-          <p class="romantic-question-prompt">
-            “Will you create beautiful memories with me?”
-          </p>
-
-          <div class="question-btn-group">
-            <button id="answerYesBtn" class="gold-cta-btn" type="button">
-              <span class="btn-shine"></span>
-              <span>YES ❤️</span>
-            </button>
-            <button id="answerLetsSeeBtn" class="outline-gold-btn" type="button">
-              LET'S SEE 💗
-            </button>
-          </div>
-
-          <div id="questionResponseBox" class="question-response hidden">
-            <p id="questionResponseText" class="question-response-text"></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 9. DREAM DESTINATION SECTION -->
-    <section id="dreamSection" class="panel-section dream-section reveal-section" aria-labelledby="dreamHeading">
-      <div class="moonlit-sky" aria-hidden="true">
-        <div class="moon-orb"></div>
-        <div class="candle-glow c1">🕯️</div>
-        <div class="candle-glow c2">🕯️</div>
-      </div>
-
-      <div class="section-shell relative-above">
-        <p class="eyebrow-tag">UNDER MOONLIGHT &amp; STARS</p>
-        <h2 id="dreamHeading" class="section-heading">One day, let's collect memories together.</h2>
-
-        <div class="glass-card dream-card">
-          <p class="dream-poetry">
-            Imagine walking barefoot along a quiet moonlit shore, waves kissing the dark sand,
-            warm candlelight flickering in the breeze, and stars watching over the two of us —
-            no rush, no worries, just your hand in mine and a sky full of promises.
-          </p>
-
-          <div class="dream-moments-grid">
-            <div class="dream-chip">🌙 Moonlit Shore Walks</div>
-            <div class="dream-chip">🕯️ Candlelight Nights</div>
-            <div class="dream-chip">✨ Stargazing &amp; Silence</div>
-            <div class="dream-chip">☕ Morning Chai Together</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10. MEMORY WALL (All 5 Existing Photos) -->
-    <section id="memoryWallSection" class="panel-section reveal-section" aria-labelledby="memoryWallHeading">
-      <div class="section-shell wide">
-        <p class="eyebrow-tag">CURATED GALLERY OF ZUHA</p>
-        <h2 id="memoryWallHeading" class="section-heading">Our Memory Wall</h2>
-        <p class="section-lead">Tap any frame to view Zuha’s portrait in full-screen splendor.</p>
-
-        <div id="memoryWallGrid" class="memory-wall-grid"></div>
-      </div>
-    </section>
-
-    <!-- 11. SECRET SURPRISE BANNER -->
-    <section id="secretBannerSection" class="panel-section reveal-section" aria-label="Secret Surprise Access">
-      <div class="section-shell">
-        <div class="glass-card secret-banner-card">
-          <p class="eyebrow-tag">HIDDEN VAULT</p>
-          <h2 class="section-heading">Something Special Waits Inside</h2>
-          <p class="section-lead">
-            A quiet whisper of love kept aside exclusively for you.
-          </p>
-          <button id="openSecretFromSectionBtn" class="gold-cta-btn" type="button">
-            <span class="btn-shine"></span>
-            <span>ONLY FO
+  <audio id="audioPlayer" preload="auto"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
