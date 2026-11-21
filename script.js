@@ -1,14 +1,17 @@
 /* ==========================================================================
    ZUHA — MY FOREVER LOVE
-   Interactive Cinematic Controller, Audio Engine & Particle System
+   Complete Interactive Experience, Audio Engine & Particle System
    ========================================================================== */
 
 (() => {
   'use strict';
 
   /* ------------------------------------------------------------------------
-     1. DATA CONFIGURATION (Exact Progressive Lines & Capitalized Zuha Files)
+     CONFIGURABLE DATES & EDITABLE ROMANTIC CONTENT
      ------------------------------------------------------------------------ */
+  // Change this date to your special day with Zuha (YYYY-MM-DDTHH:MM:SS)
+  const SPECIAL_DATE_ISO = '2025-02-14T00:00:00';
+
   const LOVE_SEQUENCE_LINES = [
     'Z💐',
     'ZU♥️',
@@ -33,10 +36,11 @@
   const FINAL_LOVE_TEXT = 'I LOVE YOU SO MUCH';
   const FINAL_BACCHA_TEXT = 'MERA BACCHA 💐✨';
 
+  // Preserves all 5 original photos (Zuha1.jpg–Zuha5.jpg), music (Zuha1.mp3–Zuha5.mp3), and shayari
   const CHAPTERS = [
     {
       roman: 'CHAPTER I',
-      subtitle: 'THE BEGINNING OF MAGIC',
+      mood: 'THE BEGINNING OF MAGIC',
       title: 'Jahan Tum Ho, Wahin Sukoon Hai',
       image: 'Zuha1.jpg',
       audio: 'Zuha1.mp3',
@@ -46,12 +50,12 @@
         'Har khushi apni tere naam waar baithe hain,\n' +
         'Log dhoondhte hain jannat aasmaanon mein kahin,\n' +
         'Aur hum teri aankhon mein apna jahan pa baithe hain.”',
-      note:
+      reflection:
         'Every time I look at you, Zuha, the noise of the entire world fades into silence.'
     },
     {
       roman: 'CHAPTER II',
-      subtitle: 'UNSPOKEN BEAUTY',
+      mood: 'UNSPOKEN BEAUTY',
       title: 'Chand Bhi Sharma Jaaye',
       image: 'Zuha2.jpg',
       audio: 'Zuha2.mp3',
@@ -61,12 +65,12 @@
         'Tu paas ho toh har gham mujhse door hai,\n' +
         'Chaand bhi dekhe tujhe toh rashk kar baithe,\n' +
         'Meri Zuha toh khuda ki sabse haseen hoor hai.”',
-      note:
+      reflection:
         'Grace, warmth, and effortless magic — you make every frame unforgettable.'
     },
     {
       roman: 'CHAPTER III',
-      subtitle: 'HEARTBEAT & SOUL',
+      mood: 'HEARTBEAT & SOUL',
       title: 'Meri Har Dua Ka Jawab Ho Tum',
       image: 'Zuha3.jpg',
       audio: 'Zuha3.mp3',
@@ -76,12 +80,12 @@
         'Har pal bas tera hi fikr rehta hai,\n' +
         'Kaise bataun kitni mohabbat hai tumse,\n' +
         'Meri har dhadkan mein sirf Zuha naam behta hai.”',
-      note:
+      reflection:
         'In a world full of temporary things, you are the feeling I want to keep forever.'
     },
     {
       roman: 'CHAPTER IV',
-      subtitle: 'DESTINY & DEVOTION',
+      mood: 'DESTINY & DEVOTION',
       title: 'Tere Saath Har Safar Khoobsurat Hai',
       image: 'Zuha4.jpg',
       audio: 'Zuha4.mp3',
@@ -91,12 +95,12 @@
         'Tere sang har mushkil bhi meherbaan ho jaaye,\n' +
         'Bas itni si khwahish hai is dil ki, Mera Baccha,\n' +
         'Meri har subah aur har shaam tere naam ho jaaye.”',
-      note:
+      reflection:
         'With you beside me, every ordinary moment feels like a scene from my favorite dream.'
     },
     {
       roman: 'CHAPTER V',
-      subtitle: 'ETERNAL PROMISE',
+      mood: 'ETERNAL PROMISE',
       title: 'Mera Aaj, Mera Kal, Meri Zuha',
       image: 'Zuha5.jpg',
       audio: 'Zuha5.mp3',
@@ -106,20 +110,77 @@
         'Har janam mein tera hi intezaar humko hoga,\n' +
         'Tu meri zindagi ki sabse khoobsurat kahani hai,\n' +
         'Mera aaj, mera kal, aur mera har pal sirf tera hoga.”',
-      note:
+      reflection:
         'Five chapters are only the prologue — our real love story lasts a lifetime.'
     }
   ];
 
+  const SECRET_LETTER_TEXT =
+    'Meri pyaari Zuha,\n\n' +
+    'Kabhi kabhi sochta hoon ki zindagi ne mujhe sabse khoobsurat tohfa kab diya — ' +
+    'aur jawab hamesha tum hoti ho. Jab tum muskurati ho, toh lagta hai jaise har uljhan ' +
+    'apne aap sulajh jaaye.\n\n' +
+    'Tumhare saath bitaya har ek lamha mere liye kisi geet jaisa hai. Chahe hum baatein karein ' +
+    'ya bas khamosh saath baithein, tumhara hona hi kaafi hai mere dil ko sukoon dene ke liye.\n\n' +
+    'I love you endlessly, Mera Baccha. Aaj bhi, kal bhi, aur hamesha.';
+
+  const LOVE_MILESTONES = [
+    {
+      step: 'MILESTONE 01',
+      title: 'The Spark That Changed Everything',
+      desc: 'A simple moment that quietly turned into the most unforgettable beginning of my heart.'
+    },
+    {
+      step: 'MILESTONE 02',
+      title: 'When Your Name Became My Favorite Word',
+      desc: 'Saying “Zuha” started feeling warmer than any melody I had ever heard.'
+    },
+    {
+      step: 'MILESTONE 03',
+      title: 'Late-Night Talks & Endless Smiles',
+      desc: 'Hours felt like minutes whenever we talked about everything and nothing at all.'
+    },
+    {
+      step: 'MILESTONE 04',
+      title: 'Finding Home in Your Presence',
+      desc: 'No matter how tiring the day got, thinking of you brought instant peace.'
+    },
+    {
+      step: 'MILESTONE 05',
+      title: 'Little Moments, Big Memories',
+      desc: 'Every glance, every laugh, and every photo became a page in my favorite book.'
+    },
+    {
+      step: 'MILESTONE 06',
+      title: 'Standing Together Through Every Mood',
+      desc: 'Learning each other’s heartbeats with patience, care, and unspoken understanding.'
+    },
+    {
+      step: 'MILESTONE 07',
+      title: 'Dreaming of Tomorrows Together',
+      desc: 'Picturing quiet mornings, shared journeys, and a lifetime built side by side.'
+    },
+    {
+      step: 'MILESTONE 08',
+      title: 'My Forever Chapter — Zuha',
+      desc: 'Not just a memory, not just a phase — you are the story I want to live forever.'
+    }
+  ];
+
+  const HEART_MESSAGES = [
+    'You are my favourite person.',
+    'My happiness starts with you.',
+    'You make my world beautiful.',
+    'Mera Baccha, my heart beats only for you.',
+    'Every smile of yours is pure magic to me.'
+  ];
+
   /* ------------------------------------------------------------------------
-     2. DOM REFERENCES
+     DOM REFERENCES
      ------------------------------------------------------------------------ */
-  const screens = {
-    opening: document.getElementById('openingScreen'),
-    sequence: document.getElementById('loveSequenceScreen'),
-    chapters: document.getElementById('chaptersScreen'),
-    finale: document.getElementById('finaleScreen')
-  };
+  const preloader = document.getElementById('preloader');
+  const scrollProgress = document.getElementById('scrollProgress');
+  const customCursor = document.getElementById('customCursor');
 
   const audioPlayer = document.getElementById('bgAudioPlayer');
   const audioHud = document.getElementById('audioHud');
@@ -128,461 +189,338 @@
   const musicStatusText = document.getElementById('musicStatusText');
   const nowPlayingLabel = document.getElementById('nowPlayingLabel');
   const volumeSlider = document.getElementById('volumeSlider');
+  const sfxToggleBtn = document.getElementById('sfxToggleBtn');
+
+  const floatingNav = document.getElementById('floatingNav');
+  const backToTopBtn = document.getElementById('backToTopBtn');
   const toastNotice = document.getElementById('toastNotice');
 
-  const openSurpriseBtn = document.getElementById('openSurpriseBtn');
+  const enterWorldBtn = document.getElementById('enterWorldBtn');
+  const onlyForZuhaBtn = document.getElementById('onlyForZuhaBtn');
+  const openSecretFromSectionBtn = document.getElementById('openSecretFromSectionBtn');
+  const secretModal = document.getElementById('secretModal');
+  const closeSecretBtn = document.getElementById('closeSecretBtn');
+
+  const daysEl = document.getElementById('daysCount');
+  const hoursEl = document.getElementById('hoursCount');
+  const minutesEl = document.getElementById('minutesCount');
+  const secondsEl = document.getElementById('secondsCount');
+  const counterCaptionEl = document.getElementById('counterStartCaption');
+
   const progressiveText = document.getElementById('progressiveText');
-  const sequenceProgressBar = document.getElementById('sequenceProgressBar');
-  const finalLoveBanner = document.getElementById('finalLoveBanner');
+  const confessionProgressFill = document.getElementById('confessionProgressFill');
+  const finalConfessionBox = document.getElementById('finalConfessionBox');
   const typedLoveLine = document.getElementById('typedLoveLine');
   const typedBacchaLine = document.getElementById('typedBacchaLine');
-  const enterChaptersBtn = document.getElementById('enterChaptersBtn');
+  const replayConfessionBtn = document.getElementById('replayConfessionBtn');
+  const jumpToChaptersBtn = document.getElementById('jumpToChaptersBtn');
 
+  const chapPills = document.querySelectorAll('.chap-pill');
+  const activeChapterStage = document.getElementById('activeChapterStage');
+  const chapterPhotoFrame = document.getElementById('chapterPhotoFrame');
   const chapterImage = document.getElementById('chapterImage');
-  const photoFallback = document.getElementById('photoFallback');
-  const fallbackFileHint = document.getElementById('fallbackFileHint');
-  const chapterRoman = document.getElementById('chapterRoman');
-  const chapterSubtitle = document.getElementById('chapterSubtitle');
-  const chapterTitle = document.getElementById('chapterTitle');
+  const chapterFallback = document.getElementById('chapterFallback');
+  const chapterFallbackText = document.getElementById('chapterFallbackText');
+  const chapterBadge = document.getElementById('chapterBadge');
   const chapterShayari = document.getElementById('chapterShayari');
-  const chapterNote = document.getElementById('chapterNote');
-  const storyContent = document.getElementById('storyContent');
-  const prevChapterBtn = document.getElementById('prevChapterBtn');
-  const nextChapterBtn = document.getElementById('nextChapterBtn');
-  const chapterDots = document.querySelectorAll('.chapter-dots .dot');
+  const chapterMood = document.getElementById('chapterMood');
+  const chapterTitle = document.getElementById('chapterTitle');
+  const chapterReflection = document.getElementById('chapterReflection');
+  const chapterAudioName = document.getElementById('chapterAudioName');
+  const prevChapBtn = document.getElementById('prevChapBtn');
+  const nextChapBtn = document.getElementById('nextChapBtn');
+  const fullscreenPhotoBtn = document.getElementById('fullscreenPhotoBtn');
 
-  const replayStoryBtn = document.getElementById('replayStoryBtn');
-  const showerHeartsBtn = document.getElementById('showerHeartsBtn');
+  const photoLightbox = document.getElementById('photoLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+
+  const sealedLetterCover = document.getElementById('sealedLetterCover');
+  const unsealedLetterPaper = document.getElementById('unsealedLetterPaper');
+  const openLetterBtn = document.getElementById('openLetterBtn');
+  const sealLetterAgainBtn = document.getElementById('sealLetterAgainBtn');
+  const typedLetterBody = document.getElementById('typedLetterBody');
+
+  const loveTimelineEl = document.getElementById('loveTimeline');
+
+  const interactiveHeartBtn = document.getElementById('interactiveHeartBtn');
+  const heartAffirmationText = document.getElementById('heartAffirmationText');
+  const heartTapCounter = document.getElementById('heartTapCounter');
+
+  const answerYesBtn = document.getElementById('answerYesBtn');
+  const answerLetsSeeBtn = document.getElementById('answerLetsSeeBtn');
+  const questionResponseBox = document.getElementById('questionResponseBox');
+  const questionResponseText = document.getElementById('questionResponseText');
+
+  const memoryWallGrid = document.getElementById('memoryWallGrid');
+  const finaleLoveBurstBtn = document.getElementById('finaleLoveBurstBtn');
+  const restartExperienceBtn = document.getElementById('restartExperienceBtn');
 
   /* ------------------------------------------------------------------------
-     3. APPLICATION STATE
+     STATE & SUBTLE SOUND EFFECTS (Web Audio API)
      ------------------------------------------------------------------------ */
   let currentChapterIndex = 0;
-  let currentAudioSrc = '';
-  let isUserMuted = false;
+  let currentTrackFile = '';
+  let isUserPaused = false;
+  let sfxEnabled = true;
+  let hasStartedConfession = false;
   let sequenceTimer = null;
-  let typingTimer = null;
-  let toastTimeout = null;
+  let confessionTypeTimer = null;
+  let letterTypeTimer = null;
+  let heartTaps = 0;
+  let toastTimer = null;
+  let audioCtx = null;
 
-  /* ------------------------------------------------------------------------
-     4. UTILITY: TOAST & SCREEN NAVIGATION
-     ------------------------------------------------------------------------ */
-  function showToast(message) {
-    toastNotice.textContent = message;
-    toastNotice.classList.add('show');
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
-      toastNotice.classList.remove('show');
-    }, 3200);
-  }
+  function playSoftChime(freq = 660, duration = 0.14) {
+    if (!sfxEnabled) return;
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!audioCtx) audioCtx = new AudioContextClass();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
 
-  function switchScreen(targetKey) {
-    Object.entries(screens).forEach(([key, el]) => {
-      if (key === targetKey) {
-        el.classList.add('active');
-      } else {
-        el.classList.remove('active');
-      }
-    });
-  }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
-  /* ------------------------------------------------------------------------
-     5. SINGLE-TRACK AUDIO ENGINE (Zero Overlap, Autoplay-Safe)
-     ------------------------------------------------------------------------ */
-  function updateAudioHudUI(isPlaying) {
-    if (isPlaying) {
-      musicEqualizer.classList.add('playing');
-      musicStatusText.textContent = 'PLAYING';
-    } else {
-      musicEqualizer.classList.remove('playing');
-      musicStatusText.textContent = isUserMuted ? 'MUTED' : 'PAUSED';
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (_) {
+      // Ignore audio context restrictions
     }
   }
 
-  function stopCurrentAudio() {
+  function showToast(msg) {
+    toastNotice.textContent = msg;
+    toastNotice.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastNotice.classList.remove('show'), 3000);
+  }
+
+  /* ------------------------------------------------------------------------
+     SINGLE-TRACK MUSIC ENGINE (Never plays two songs at once)
+     ------------------------------------------------------------------------ */
+  function syncAudioUI(isPlaying) {
+    musicEqualizer.classList.toggle('playing', isPlaying);
+    musicStatusText.textContent = isPlaying ? 'PAUSE' : 'PLAY';
+  }
+
+  function stopTrackImmediately() {
     audioPlayer.pause();
     try {
       audioPlayer.currentTime = 0;
-    } catch (_) {
-      // Ignore seek errors if metadata not yet loaded
-    }
-    updateAudioHudUI(false);
+    } catch (_) {}
+    syncAudioUI(false);
   }
 
-  function playTrack(src, label) {
-    nowPlayingLabel.textContent = label;
+  function playChapterAudio(fileName) {
+    nowPlayingLabel.textContent = fileName;
 
-    // Strictly stop any previously playing track before switching
-    if (currentAudioSrc !== src) {
-      stopCurrentAudio();
-      currentAudioSrc = src;
-      audioPlayer.src = src;
+    if (currentTrackFile !== fileName) {
+      stopTrackImmediately();
+      currentTrackFile = fileName;
+      audioPlayer.src = fileName;
       audioPlayer.loop = true;
       audioPlayer.load();
     }
 
     audioPlayer.volume = parseFloat(volumeSlider.value);
 
-    if (isUserMuted) {
-      updateAudioHudUI(false);
+    if (isUserPaused) {
+      syncAudioUI(false);
       return;
     }
 
-    const playPromise = audioPlayer.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          updateAudioHudUI(true);
-        })
+    const promise = audioPlayer.play();
+    if (promise && typeof promise.then === 'function') {
+      promise
+        .then(() => syncAudioUI(true))
         .catch(() => {
-          updateAudioHudUI(false);
-          showToast('Tap "SOUND" at the top to enable music ✨');
+          syncAudioUI(false);
+          showToast('Tap PLAY in the top bar to start music ♪');
         });
     }
   }
 
-  // Graceful fallback if an MP3 file is missing from the folder
   audioPlayer.addEventListener('error', () => {
-    updateAudioHudUI(false);
-    if (currentAudioSrc) {
-      showToast(`Audio file "${currentAudioSrc}" not found in folder`);
+    syncAudioUI(false);
+    if (currentTrackFile) {
+      showToast(`Place "${currentTrackFile}" in your project folder`);
     }
   });
 
   musicToggleBtn.addEventListener('click', () => {
+    playSoftChime(580, 0.1);
     if (audioPlayer.paused) {
-      isUserMuted = false;
+      isUserPaused = false;
+      const trackToPlay = currentTrackFile || CHAPTERS[currentChapterIndex].audio;
+      if (!audioPlayer.src || currentTrackFile !== trackToPlay) {
+        currentTrackFile = trackToPlay;
+        audioPlayer.src = trackToPlay;
+        audioPlayer.loop = true;
+      }
+      audioPlayer.volume = parseFloat(volumeSlider.value);
       audioPlayer
         .play()
-        .then(() => updateAudioHudUI(true))
-        .catch(() => showToast(`Add "${currentAudioSrc || 'Zuha1.mp3'}" to play music`));
+        .then(() => syncAudioUI(true))
+        .catch(() => showToast(`Add "${trackToPlay}" to play audio`));
     } else {
-      isUserMuted = true;
+      isUserPaused = true;
       audioPlayer.pause();
-      updateAudioHudUI(false);
+      syncAudioUI(false);
     }
   });
 
   volumeSlider.addEventListener('input', (e) => {
-    const vol = parseFloat(e.target.value);
-    audioPlayer.volume = vol;
-    if (vol === 0) {
-      isUserMuted = true;
+    const val = parseFloat(e.target.value);
+    audioPlayer.volume = val;
+    if (val === 0) {
+      isUserPaused = true;
       audioPlayer.pause();
-      updateAudioHudUI(false);
-    } else if (audioPlayer.paused && !isUserMuted) {
-      audioPlayer.play().then(() => updateAudioHudUI(true)).catch(() => {});
+      syncAudioUI(false);
+    } else if (audioPlayer.paused && !isUserPaused) {
+      audioPlayer.play().then(() => syncAudioUI(true)).catch(() => {});
     }
   });
 
-  /* ------------------------------------------------------------------------
-     6. STAGE 1: PROGRESSIVE LOVE MESSAGE + TYPED FINALE LINES
-     ------------------------------------------------------------------------ */
-  function typeTwoLinesSequentially(line1, line2, onComplete) {
-    const chars1 = Array.from(line1);
-    const chars2 = Array.from(line2);
-    let idx1 = 0;
-    let idx2 = 0;
+  sfxToggleBtn.addEventListener('click', () => {
+    sfxEnabled = !sfxEnabled;
+    sfxToggleBtn.textContent = sfxEnabled ? 'SFX: ON' : 'SFX: OFF';
+    if (sfxEnabled) playSoftChime(740, 0.1);
+  });
 
+  /* ------------------------------------------------------------------------
+     LOVE COUNTER
+     ------------------------------------------------------------------------ */
+  function updateLoveCounter() {
+    const start = new Date(SPECIAL_DATE_ISO).getTime();
+    const now = Date.now();
+    const diff = Math.max(0, now - start);
+
+    const totalSec = Math.floor(diff / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+
+    daysEl.textContent = String(days).padStart(2, '0');
+    hoursEl.textContent = String(hours).padStart(2, '0');
+    minutesEl.textContent = String(minutes).padStart(2, '0');
+    secondsEl.textContent = String(seconds).padStart(2, '0');
+
+    const formattedDate = new Date(SPECIAL_DATE_ISO).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    counterCaptionEl.textContent = `Counting every precious moment since ${formattedDate}`;
+  }
+
+  updateLoveCounter();
+  setInterval(updateLoveCounter, 1000);
+
+  /* ------------------------------------------------------------------------
+     ORIGINAL PROGRESSIVE CONFESSION + TYPED FINAL LINES
+     ------------------------------------------------------------------------ */
+  function typeFinalConfessionLines() {
+    clearInterval(confessionTypeTimer);
     typedLoveLine.textContent = '';
     typedBacchaLine.textContent = '';
 
-    clearInterval(typingTimer);
+    const chars1 = Array.from(FINAL_LOVE_TEXT);
+    const chars2 = Array.from(FINAL_BACCHA_TEXT);
+    let i = 0;
+    let j = 0;
 
-    typingTimer = setInterval(() => {
-      if (idx1 < chars1.length) {
-        typedLoveLine.textContent += chars1[idx1];
-        idx1++;
-      } else if (idx2 < chars2.length) {
-        typedBacchaLine.textContent += chars2[idx2];
-        idx2++;
+    confessionTypeTimer = setInterval(() => {
+      if (i < chars1.length) {
+        typedLoveLine.textContent += chars1[i++];
+      } else if (j < chars2.length) {
+        typedBacchaLine.textContent += chars2[j++];
       } else {
-        clearInterval(typingTimer);
-        if (typeof onComplete === 'function') {
-          onComplete();
-        }
+        clearInterval(confessionTypeTimer);
+        burstParticles(24);
       }
-    }, 65);
+    }, 60);
   }
 
-  function startLoveMessageAnimation() {
+  function runConfessionSequence() {
     clearInterval(sequenceTimer);
-    clearInterval(typingTimer);
+    clearInterval(confessionTypeTimer);
 
-    finalLoveBanner.classList.add('hidden');
-    enterChaptersBtn.classList.add('hidden');
+    finalConfessionBox.classList.add('hidden');
     typedLoveLine.textContent = '';
     typedBacchaLine.textContent = '';
     progressiveText.textContent = '';
-    sequenceProgressBar.style.width = '0%';
+    confessionProgressFill.style.width = '0%';
 
-    let step = 0;
+    let idx = 0;
     const total = LOVE_SEQUENCE_LINES.length;
 
-    const renderStep = () => {
-      if (step < total) {
-        progressiveText.textContent = LOVE_SEQUENCE_LINES[step];
+    const step = () => {
+      if (idx < total) {
+        progressiveText.textContent = LOVE_SEQUENCE_LINES[idx];
         progressiveText.classList.remove('pop');
         void progressiveText.offsetWidth;
         progressiveText.classList.add('pop');
-
-        const percent = Math.round(((step + 1) / total) * 100);
-        sequenceProgressBar.style.width = `${percent}%`;
-        step++;
+        confessionProgressFill.style.width = `${Math.round(((idx + 1) / total) * 100)}%`;
+        idx++;
       } else {
         clearInterval(sequenceTimer);
-        finalLoveBanner.classList.remove('hidden');
-        burstParticles(28);
-
-        typeTwoLinesSequentially(FINAL_LOVE_TEXT, FINAL_BACCHA_TEXT, () => {
-          enterChaptersBtn.classList.remove('hidden');
-          burstParticles(20);
-        });
+        finalConfessionBox.classList.remove('hidden');
+        typeFinalConfessionLines();
       }
     };
 
-    renderStep();
-    sequenceTimer = setInterval(renderStep, 430);
+    step();
+    sequenceTimer = setInterval(step, 420);
   }
 
+  replayConfessionBtn.addEventListener('click', () => {
+    playSoftChime(620, 0.12);
+    runConfessionSequence();
+  });
+
+  jumpToChaptersBtn.addEventListener('click', () => {
+    playSoftChime(680, 0.12);
+    document.getElementById('chaptersSection').scrollIntoView({ behavior: 'smooth' });
+  });
+
   /* ------------------------------------------------------------------------
-     7. STAGE 2: FIVE PHOTO CHAPTERS CONTROLLER
+     FIVE CINEMATIC PHOTO CHAPTERS (Zuha1.jpg–Zuha5.jpg & Zuha1.mp3–Zuha5.mp3)
      ------------------------------------------------------------------------ */
-  function renderChapter(index) {
+  function selectChapter(index, shouldPlayAudio = true) {
     currentChapterIndex = index;
-    const data = CHAPTERS[index];
+    const chap = CHAPTERS[index];
 
-    // Update Chapter Dots
-    chapterDots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === index);
-    });
+    chapPills.forEach((pill, i) => pill.classList.toggle('active', i === index));
 
-    // Reset & load image with graceful fallback if missing
-    photoFallback.classList.add('hidden');
+    activeChapterStage.classList.remove('layout-0', 'layout-1', 'layout-2', 'layout-3', 'layout-4');
+    activeChapterStage.classList.add(`layout-${index}`);
+
+    chapterFallback.classList.add('hidden');
     chapterImage.style.display = 'block';
-    chapterImage.style.opacity = '0';
-
+    chapterImage.style.opacity = '0.35';
     chapterImage.onload = () => {
       chapterImage.style.opacity = '1';
     };
-
     chapterImage.onerror = () => {
       chapterImage.style.display = 'none';
-      fallbackFileHint.textContent = `Add "${data.image}" to the same folder`;
-      photoFallback.classList.remove('hidden');
+      chapterFallbackText.textContent = `Add "${chap.image}" to the same folder`;
+      chapterFallback.classList.remove('hidden');
     };
+    chapterImage.src = chap.image;
+    chapterImage.alt = `${chap.roman} — ${chap.title}`;
 
-    chapterImage.src = data.image;
-    chapterImage.alt = `Zuha — ${data.roman}`;
-
-    // Re-trigger text entrance animation
-    storyContent.classList.remove('animate-in');
-    void storyContent.offsetWidth;
-    storyContent.classList.add('animate-in');
-
-    chapterRoman.textContent = data.roman;
-    chapterSubtitle.textContent = data.subtitle;
-    chapterTitle.textContent = data.title;
-    chapterShayari.textContent = data.shayari;
-    chapterNote.textContent = data.note;
-
-    // Update Previous / Next button labels & state
-    prevChapterBtn.disabled = index === 0;
-    nextChapterBtn.textContent =
-      index === CHAPTERS.length - 1 ? 'GRAND FINALE ❤️' : 'NEXT CHAPTER →';
-
-    // Play the exclusive track for this chapter
-    playTrack(data.audio, data.songLabel);
-    burstParticles(14);
-  }
-
-  prevChapterBtn.addEventListener('click', () => {
-    if (currentChapterIndex > 0) {
-      renderChapter(currentChapterIndex - 1);
-    }
-  });
-
-  nextChapterBtn.addEventListener('click', () => {
-    if (currentChapterIndex < CHAPTERS.length - 1) {
-      renderChapter(currentChapterIndex + 1);
-    } else {
-      switchScreen('finale');
-      burstParticles(42);
-    }
-  });
-
-  chapterDots.forEach((dot) => {
-    dot.addEventListener('click', () => {
-      const targetIdx = parseInt(dot.dataset.index, 10);
-      if (!Number.isNaN(targetIdx)) {
-        renderChapter(targetIdx);
-      }
-    });
-  });
-
-  /* ------------------------------------------------------------------------
-     8. MAIN USER FLOW EVENT LISTENERS
-     ------------------------------------------------------------------------ */
-  openSurpriseBtn.addEventListener('click', () => {
-    audioHud.classList.remove('hidden');
-    playTrack('Zuha1.mp3', 'Zuha1.mp3');
-    switchScreen('sequence');
-    startLoveMessageAnimation();
-    burstParticles(30);
-  });
-
-  enterChaptersBtn.addEventListener('click', () => {
-    switchScreen('chapters');
-    renderChapter(0);
-  });
-
-  replayStoryBtn.addEventListener('click', () => {
-    switchScreen('chapters');
-    renderChapter(0);
-  });
-
-  showerHeartsBtn.addEventListener('click', () => {
-    burstParticles(50);
-    showToast('I Love You So Much, Mera Baccha 💐✨');
-  });
-
-  /* ------------------------------------------------------------------------
-     9. AMBIENT CANVAS: FLOATING ROSE PETALS, GOLDEN PARTICLES & HEARTS
-     ------------------------------------------------------------------------ */
-  const canvas = document.getElementById('ambientCanvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let width = 0;
-  let height = 0;
-
-  function resizeCanvas() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  }
-
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  function createParticle(isBurst = false) {
-    const types = ['petal', 'gold', 'heart'];
-    const weights = isBurst ? [0.45, 0.25, 0.3] : [0.45, 0.42, 0.13];
-    const r = Math.random();
-    let type = types[0];
-    if (r > weights[0] + weights[1]) type = 'heart';
-    else if (r > weights[0]) type = 'gold';
-
-    return {
-      type,
-      x: Math.random() * width,
-      y: isBurst ? height * (0.35 + Math.random() * 0.45) : Math.random() * height,
-      size: type === 'gold' ? Math.random() * 2.4 + 1 : Math.random() * 7 + 5,
-      speedY:
-        type === 'heart'
-          ? -(Math.random() * 0.9 + 0.4)
-          : Math.random() * 0.85 + 0.35,
-      speedX: (Math.random() - 0.5) * 0.7,
-      rotation: Math.random() * Math.PI * 2,
-      spin: (Math.random() - 0.5) * 0.025,
-      opacity: Math.random() * 0.55 + 0.25,
-      swayOffset: Math.random() * 100
-    };
-  }
-
-  function initParticles() {
-    const baseCount = width < 600 ? 34 : 58;
-    particles = Array.from({ length: baseCount }, () => createParticle(false));
-  }
-
-  function burstParticles(count) {
-    for (let i = 0; i < count; i++) {
-      particles.push(createParticle(true));
-    }
-    if (particles.length > 140) {
-      particles.splice(0, particles.length - 140);
-    }
-  }
-
-  function drawPetal(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rotation);
-    ctx.globalAlpha = p.opacity;
-
-    const grad = ctx.createRadialGradient(0, 0, 1, 0, 0, p.size);
-    grad.addColorStop(0, '#c9184a');
-    grad.addColorStop(1, '#4a0618');
-    ctx.fillStyle = grad;
-
-    ctx.beginPath();
-    ctx.moveTo(0, -p.size);
-    ctx.bezierCurveTo(p.size, -p.size * 0.6, p.size * 0.8, p.size, 0, p.size * 1.1);
-    ctx.bezierCurveTo(-p.size * 0.8, p.size, -p.size, -p.size * 0.6, 0, -p.size);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  function drawGoldDust(p) {
-    ctx.save();
-    ctx.globalAlpha = p.opacity;
-    ctx.fillStyle = '#f6d5c1';
-    ctx.shadowColor = '#e5b299';
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  function drawHeart(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.scale(p.size / 14, p.size / 14);
-    ctx.globalAlpha = p.opacity;
-    ctx.fillStyle = '#e5b299';
-    ctx.shadowColor = '#a4133c';
-    ctx.shadowBlur = 10;
-
-    ctx.beginPath();
-    ctx.moveTo(0, 4);
-    ctx.bezierCurveTo(0, 0, -8, -4, -8, 2);
-    ctx.bezierCurveTo(-8, 8, 0, 12, 0, 15);
-    ctx.bezierCurveTo(0, 12, 8, 8, 8, 2);
-    ctx.bezierCurveTo(8, -4, 0, 0, 0, 4);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  let frameTick = 0;
-  function animateParticles() {
-    frameTick += 0.015;
-    ctx.clearRect(0, 0, width, height);
-
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.y += p.speedY;
-      p.x += p.speedX + Math.sin(frameTick + p.swayOffset) * 0.28;
-      p.rotation += p.spin;
-
-      if (p.type === 'petal') drawPetal(p);
-      else if (p.type === 'gold') drawGoldDust(p);
-      else drawHeart(p);
-
-      // Wrap around screen edges smoothly
-      if (p.y > height + 20) {
-        p.y = -15;
-        p.x = Math.random() * width;
-      } else if (p.y < -20) {
-        p.y = height + 15;
-        p.x = Math.random() * width;
-      }
-      if (p.x > width + 20) p.x = -15;
-      if (p.x < -20) p.x = width + 15;
-    }
-
-    requestAnimationFrame(animateParticles);
-  }
-
-  initParticles();
-  animateParticles();
-})();
-       
+    chapterBadge.textContent = `${chap.roman} · ${chap.audio}`;
+    chapterShayari.textContent = chap.shayari;
+    chapterMood.textContent = chap.mood;
+    chapterTitle.textContent = chap.title;
+    chapterReflection.textContent = chap
