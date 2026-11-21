@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +85,6 @@
         <div class="envelope-glow"></div>
         <div class="rose-rise">🌹</div>
         <div class="env-card">
-          <div class="env-flap"></div>
           <div class="env-seal">Z ♥</div>
         </div>
       </div>
@@ -152,20 +150,17 @@
           <p id="typedLine2" class="typed-two"></p>
         </div>
 
-        <div class="btn-row">
-          <button id="replayConfessionBtn" class="btn-outline" type="button">↺ Replay Animation</button>
-          <a href="#chaptersSection" class="btn-gold">Explore 5 Chapters →</a>
-        </div>
+        <p id="autoAdvanceStatus" class="auto-status">Surprise animation ke baad next chapter apne aap khulega...</p>
       </div>
     </div>
   </section>
 
-  <!-- 4. FIVE CINEMATIC PHOTO CHAPTERS -->
+  <!-- 4. FIVE CINEMATIC PHOTO CHAPTERS (Auto-Advancing After Each Animation) -->
   <section id="chaptersSection" class="section">
     <div class="wrap wide center">
       <p class="eyebrow">FIVE CINEMATIC CHAPTERS</p>
       <h2 class="sec-title">Frames That Hold My Soul</h2>
-      <p class="lead">Each chapter plays its own song with romantic shayari and full-screen view.</p>
+      <p class="lead">Har chapter ka animation aur shayari poora hone ke baad agla surprise page apne aap khulta hai.</p>
 
       <div id="chapterTabs" class="chap-tabs">
         <button type="button" class="chap-tab active" data-index="0">I · Zuha1</button>
@@ -198,10 +193,10 @@
           <p id="chapDesc" class="chap-desc"></p>
           <p class="track-line">Now Playing: <strong id="chapTrack">Zuha1.mp3</strong></p>
 
-          <div class="btn-row left-row">
-            <button id="prevChapBtn" class="btn-outline" type="button">← Previous</button>
-            <button id="nextChapBtn" class="btn-gold" type="button">Next Chapter →</button>
+          <div class="chapter-timer-bar">
+            <div id="chapTimerFill" class="chapter-timer-fill"></div>
           </div>
+          <p id="chapAutoHint" class="auto-status left-align">Animation khatam hone par agla surprise khulega...</p>
         </div>
       </div>
     </div>
