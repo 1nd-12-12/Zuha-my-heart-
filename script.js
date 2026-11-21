@@ -7,7 +7,7 @@
   'use strict';
 
   /* ------------------------------------------------------------------------
-     1. DATA CONFIGURATION (Exact Progressive Lines & Five Chapters)
+     1. DATA CONFIGURATION (Exact Progressive Lines & Capitalized Zuha Files)
      ------------------------------------------------------------------------ */
   const LOVE_SEQUENCE_LINES = [
     'Z💐',
@@ -30,14 +30,17 @@
     'ZUHA I LOVE YOU SO MUCH❣️'
   ];
 
+  const FINAL_LOVE_TEXT = 'I LOVE YOU SO MUCH';
+  const FINAL_BACCHA_TEXT = 'MERA BACCHA 💐✨';
+
   const CHAPTERS = [
     {
       roman: 'CHAPTER I',
       subtitle: 'THE BEGINNING OF MAGIC',
       title: 'Jahan Tum Ho, Wahin Sukoon Hai',
-      image: 'zuha1.jpg',
-      audio: 'zuha1.mp3',
-      songLabel: 'Chapter I — zuha1.mp3',
+      image: 'Zuha1.jpg',
+      audio: 'Zuha1.mp3',
+      songLabel: 'Zuha1.mp3',
       shayari:
         '“Teri ek muskurahat pe yeh dil haar baithe hain,\n' +
         'Har khushi apni tere naam waar baithe hain,\n' +
@@ -50,9 +53,9 @@
       roman: 'CHAPTER II',
       subtitle: 'UNSPOKEN BEAUTY',
       title: 'Chand Bhi Sharma Jaaye',
-      image: 'zuha2.jpg',
-      audio: 'zuha2.mp3',
-      songLabel: 'Chapter II — zuha2.mp3',
+      image: 'Zuha2.jpg',
+      audio: 'Zuha2.mp3',
+      songLabel: 'Zuha2.mp3',
       shayari:
         '“Teri saadgi mein bhi ek alag hi noor hai,\n' +
         'Tu paas ho toh har gham mujhse door hai,\n' +
@@ -65,9 +68,9 @@
       roman: 'CHAPTER III',
       subtitle: 'HEARTBEAT & SOUL',
       title: 'Meri Har Dua Ka Jawab Ho Tum',
-      image: 'zuha3.jpg',
-      audio: 'zuha3.mp3',
-      songLabel: 'Chapter III — zuha3.mp3',
+      image: 'Zuha3.jpg',
+      audio: 'Zuha3.mp3',
+      songLabel: 'Zuha3.mp3',
       shayari:
         '“Meri har dua mein tera hi zikr rehta hai,\n' +
         'Har pal bas tera hi fikr rehta hai,\n' +
@@ -80,9 +83,9 @@
       roman: 'CHAPTER IV',
       subtitle: 'DESTINY & DEVOTION',
       title: 'Tere Saath Har Safar Khoobsurat Hai',
-      image: 'zuha4.jpg',
-      audio: 'zuha4.mp3',
-      songLabel: 'Chapter IV — zuha4.mp3',
+      image: 'Zuha4.jpg',
+      audio: 'Zuha4.mp3',
+      songLabel: 'Zuha4.mp3',
       shayari:
         '“Haath thaam lo mera toh safar aasaan ho jaaye,\n' +
         'Tere sang har mushkil bhi meherbaan ho jaaye,\n' +
@@ -95,9 +98,9 @@
       roman: 'CHAPTER V',
       subtitle: 'ETERNAL PROMISE',
       title: 'Mera Aaj, Mera Kal, Meri Zuha',
-      image: 'zuha5.jpg',
-      audio: 'zuha5.mp3',
-      songLabel: 'Chapter V — zuha5.mp3',
+      image: 'Zuha5.jpg',
+      audio: 'Zuha5.mp3',
+      songLabel: 'Zuha5.mp3',
       shayari:
         '“Na waqt badlega, na yeh pyaar kam hoga,\n' +
         'Har janam mein tera hi intezaar humko hoga,\n' +
@@ -131,6 +134,8 @@
   const progressiveText = document.getElementById('progressiveText');
   const sequenceProgressBar = document.getElementById('sequenceProgressBar');
   const finalLoveBanner = document.getElementById('finalLoveBanner');
+  const typedLoveLine = document.getElementById('typedLoveLine');
+  const typedBacchaLine = document.getElementById('typedBacchaLine');
   const enterChaptersBtn = document.getElementById('enterChaptersBtn');
 
   const chapterImage = document.getElementById('chapterImage');
@@ -156,6 +161,7 @@
   let currentAudioSrc = '';
   let isUserMuted = false;
   let sequenceTimer = null;
+  let typingTimer = null;
   let toastTimeout = null;
 
   /* ------------------------------------------------------------------------
@@ -249,7 +255,7 @@
       audioPlayer
         .play()
         .then(() => updateAudioHudUI(true))
-        .catch(() => showToast(`Add "${currentAudioSrc || 'zuha1.mp3'}" to play music`));
+        .catch(() => showToast(`Add "${currentAudioSrc || 'Zuha1.mp3'}" to play music`));
     } else {
       isUserMuted = true;
       audioPlayer.pause();
@@ -270,11 +276,43 @@
   });
 
   /* ------------------------------------------------------------------------
-     6. STAGE 1: PROGRESSIVE LOVE MESSAGE ANIMATION
+     6. STAGE 1: PROGRESSIVE LOVE MESSAGE + TYPED FINALE LINES
      ------------------------------------------------------------------------ */
+  function typeTwoLinesSequentially(line1, line2, onComplete) {
+    const chars1 = Array.from(line1);
+    const chars2 = Array.from(line2);
+    let idx1 = 0;
+    let idx2 = 0;
+
+    typedLoveLine.textContent = '';
+    typedBacchaLine.textContent = '';
+
+    clearInterval(typingTimer);
+
+    typingTimer = setInterval(() => {
+      if (idx1 < chars1.length) {
+        typedLoveLine.textContent += chars1[idx1];
+        idx1++;
+      } else if (idx2 < chars2.length) {
+        typedBacchaLine.textContent += chars2[idx2];
+        idx2++;
+      } else {
+        clearInterval(typingTimer);
+        if (typeof onComplete === 'function') {
+          onComplete();
+        }
+      }
+    }, 65);
+  }
+
   function startLoveMessageAnimation() {
     clearInterval(sequenceTimer);
+    clearInterval(typingTimer);
+
     finalLoveBanner.classList.add('hidden');
+    enterChaptersBtn.classList.add('hidden');
+    typedLoveLine.textContent = '';
+    typedBacchaLine.textContent = '';
     progressiveText.textContent = '';
     sequenceProgressBar.style.width = '0%';
 
@@ -285,7 +323,7 @@
       if (step < total) {
         progressiveText.textContent = LOVE_SEQUENCE_LINES[step];
         progressiveText.classList.remove('pop');
-        void progressiveText.offsetWidth; // Trigger reflow for smooth pop
+        void progressiveText.offsetWidth;
         progressiveText.classList.add('pop');
 
         const percent = Math.round(((step + 1) / total) * 100);
@@ -295,11 +333,16 @@
         clearInterval(sequenceTimer);
         finalLoveBanner.classList.remove('hidden');
         burstParticles(28);
+
+        typeTwoLinesSequentially(FINAL_LOVE_TEXT, FINAL_BACCHA_TEXT, () => {
+          enterChaptersBtn.classList.remove('hidden');
+          burstParticles(20);
+        });
       }
     };
 
     renderStep();
-    sequenceTimer = setInterval(renderStep, 480);
+    sequenceTimer = setInterval(renderStep, 430);
   }
 
   /* ------------------------------------------------------------------------
@@ -363,7 +406,6 @@
     if (currentChapterIndex < CHAPTERS.length - 1) {
       renderChapter(currentChapterIndex + 1);
     } else {
-      // Transition to Grand Finale while keeping Chapter V romantic track playing
       switchScreen('finale');
       burstParticles(42);
     }
@@ -382,9 +424,8 @@
      8. MAIN USER FLOW EVENT LISTENERS
      ------------------------------------------------------------------------ */
   openSurpriseBtn.addEventListener('click', () => {
-    // Unlock audio on user gesture & start Chapter 1 melody softly during confession
     audioHud.classList.remove('hidden');
-    playTrack(CHAPTERS[0].audio, 'Zuha — Romantic Prelude');
+    playTrack('Zuha1.mp3', 'Zuha1.mp3');
     switchScreen('sequence');
     startLoveMessageAnimation();
     burstParticles(30);
@@ -544,3 +585,4 @@
   initParticles();
   animateParticles();
 })();
+       
